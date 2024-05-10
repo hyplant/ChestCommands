@@ -1,7 +1,5 @@
 /*
- * Copyright (C) Jan Schultke
- *
- * SPDX-License-Identifier: MIT
+ * Copyright (C) Jan Schultke SPDX-License-Identifier: MIT
  */
 package me.filoghost.chestcommands.util.nbt;
 
@@ -10,17 +8,19 @@ package me.filoghost.chestcommands.util.nbt;
  * The type of an NBTTag.
  * </p>
  * <p>
- * This enum may be prone to further additions, such as the {@link #LONG_ARRAY} which has been added by Mojang
- * in NBT Version 19133. (second NBT version)
+ * This enum may be prone to further additions, such as the {@link #LONG_ARRAY}
+ * which has been added by Mojang in NBT Version 19133. (second NBT version)
  * </p>
  * <p>
- * For a community maintained documentation of the NBT format and its types, visit the
- * <a href=https://minecraft.gamepedia.com/NBT_format>Minecraft Wiki</a>
+ * For a community maintained documentation of the NBT format and its types,
+ * visit the <a href=https://minecraft.gamepedia.com/NBT_format>Minecraft
+ * Wiki</a>
  * </p>
  */
 public enum NBTType {
     /**
-     * Used to mark the end of compounds tags. May also be the type of empty list tags.
+     * Used to mark the end of compounds tags. May also be the type of empty list
+     * tags.
      *
      * @since NBT Version 19132
      */
@@ -114,9 +114,9 @@ public enum NBTType {
     private final boolean numeric, primitive, array;
     private final byte id;
 
-    NBTType(String name, boolean primitive, boolean numeric, boolean array) {
+    NBTType(final String name, final boolean primitive, final boolean numeric, final boolean array) {
         this.name = name;
-        this.id = (byte) ordinal();
+        this.id = (byte) this.ordinal();
         this.numeric = numeric;
         this.primitive = primitive;
         this.array = array;
@@ -128,70 +128,60 @@ public enum NBTType {
      * @param id the id
      * @return the type
      */
-    public static NBTType getById(byte id) {
-        return values()[id];
-    }
+    public static NBTType getById(final byte id) { return NBTType.values()[id]; }
 
     /**
      * <p>
      * Returns the id of this tag type.
      * </p>
      * <p>
-     * Although this method is currently equivalent to {@link #ordinal()}, it should always be used in its stead,
-     * since it is not guaranteed that this behavior will remain consistent.
+     * Although this method is currently equivalent to {@link #ordinal()}, it should
+     * always be used in its stead, since it is not guaranteed that this behavior
+     * will remain consistent.
      * </p>
      *
      * @return the id
      */
-    public byte getId() {
-        return id;
-    }
+    public byte getId() { return this.id; }
 
     /**
      * Returns the name of this type.
      *
      * @return the name
      */
-    public String getName() {
-        return name;
-    }
+    public String getName() { return this.name; }
 
     /**
      * <p>
      * Returns whether this tag type is numeric.
      * </p>
      * <p>
-     * All tag types with payloads that are representable as a {@link Number} are compliant with this definition.
+     * All tag types with payloads that are representable as a {@link Number} are
+     * compliant with this definition.
      * </p>
      *
      * @return whether this type is numeric
      */
-    public boolean isNumeric() {
-        return numeric;
-    }
+    public boolean isNumeric() { return this.numeric; }
 
     /**
-     * Returns whether this tag type is primitive, meaning that it is not a {@link NBTByteArray}, {@link NBTIntArray},
-     * {@link NBTList}, {@link NBTCompound}.
+     * Returns whether this tag type is primitive, meaning that it is not a
+     * {@link NBTByteArray}, {@link NBTIntArray}, {@link NBTList},
+     * {@link NBTCompound}.
      *
      * @return whether this type is numeric
      */
-    public boolean isPrimitive() {
-        return primitive;
-    }
+    public boolean isPrimitive() { return this.primitive; }
 
     /**
-     * Returns whether this tag type is is an array type such as {@link NBTByteArray} or {@link NBTIntArray}.
+     * Returns whether this tag type is is an array type such as
+     * {@link NBTByteArray} or {@link NBTIntArray}.
      *
      * @return whether this type is an array type
      */
-    public boolean isArray() {
-        return array;
-    }
+    public boolean isArray() { return this.array; }
 
     @Override
-    public String toString() {
-        return getName();
-    }
+    public String toString() { return this.getName(); }
 
 }

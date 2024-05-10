@@ -1,7 +1,6 @@
 /*
- * Copyright (C) filoghost and contributors
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) filoghost and contributors SPDX-License-Identifier:
+ * GPL-3.0-or-later
  */
 package me.filoghost.chestcommands.legacy.v4_0;
 
@@ -11,15 +10,13 @@ import me.filoghost.fcommons.config.Config;
 
 public class V4_0_SettingsUpgradeTask extends YamlUpgradeTask {
 
-    public V4_0_SettingsUpgradeTask(ConfigManager configManager) {
-        super(configManager.getConfigLoader("config.yml"));
-    }
+    public V4_0_SettingsUpgradeTask(final ConfigManager configManager) { super(configManager.getConfigLoader("config.yml")); }
 
     @Override
-    public void computeYamlChanges(Config settingsConfig) {
-        removeValue(settingsConfig, "use-only-commands-without-args");
-        removeValue(settingsConfig, "use-console-colors");
-        removeValue(settingsConfig, "multiple-commands-separator");
+    public void computeYamlChanges(final Config settingsConfig) {
+        this.removeValue(settingsConfig, "use-only-commands-without-args");
+        this.removeValue(settingsConfig, "use-console-colors");
+        this.removeValue(settingsConfig, "multiple-commands-separator");
     }
 
 }

@@ -1,7 +1,5 @@
 /*
- * Copyright (C) Jan Schultke
- *
- * SPDX-License-Identifier: MIT
+ * Copyright (C) Jan Schultke SPDX-License-Identifier: MIT
  */
 package me.filoghost.chestcommands.util.nbt.parser;
 
@@ -11,13 +9,13 @@ public class MojangsonParseException extends IOException {
 
     private static final long serialVersionUID = 1L;
 
-    public MojangsonParseException(String msg, String content, int index) {
-        super(msg + " at character " + index + ": " + printErrorLoc(content, index));
+    public MojangsonParseException(final String msg, final String content, final int index) {
+        super(msg + " at character " + index + ": " + MojangsonParseException.printErrorLoc(content, index));
     }
 
-    private static String printErrorLoc(String content, int index) {
-        StringBuilder builder = new StringBuilder();
-        int i = Math.min(content.length(), index);
+    private static String printErrorLoc(final String content, final int index) {
+        final StringBuilder builder = new StringBuilder();
+        final int i = Math.min(content.length(), index);
         if (i > 35) {
             builder.append("...");
         }

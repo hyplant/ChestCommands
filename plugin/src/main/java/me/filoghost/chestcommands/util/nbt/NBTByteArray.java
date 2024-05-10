@@ -1,7 +1,5 @@
 /*
- * Copyright (C) Jan Schultke
- *
- * SPDX-License-Identifier: MIT
+ * Copyright (C) Jan Schultke SPDX-License-Identifier: MIT
  */
 package me.filoghost.chestcommands.util.nbt;
 
@@ -14,14 +12,12 @@ public final class NBTByteArray extends NBTTag {
 
     private final byte[] value;
 
-    public NBTByteArray(byte[] value) {
-        this.value = value;
-    }
+    public NBTByteArray(final byte[] value) { this.value = value; }
 
-    public NBTByteArray(Number[] numbers) {
+    public NBTByteArray(final Number[] numbers) {
         this.value = new byte[numbers.length];
         for (int i = 0; i < numbers.length; i++) {
-            value[i] = numbers[i].byteValue();
+            this.value[i] = numbers[i].byteValue();
         }
     }
 
@@ -30,34 +26,24 @@ public final class NBTByteArray extends NBTTag {
      *
      * @return the length of this array
      */
-    public int length() {
-        return value.length;
-    }
+    public int length() { return this.value.length; }
 
     @Override
-    public byte[] getValue() {
-        return value;
-    }
+    public byte[] getValue() { return this.value; }
 
     @Override
-    public NBTType getType() {
-        return NBTType.BYTE_ARRAY;
-    }
+    public NBTType getType() { return NBTType.BYTE_ARRAY; }
 
     // MISC
 
     @Override
-    public boolean equals(Object obj) {
-        return obj instanceof NBTByteArray && equals((NBTByteArray) obj);
-    }
+    public boolean equals(final Object obj) { return obj instanceof NBTByteArray && this.equals((NBTByteArray) obj); }
 
-    public boolean equals(NBTByteArray tag) {
-        return Arrays.equals(this.value, tag.value);
-    }
+    public boolean equals(final NBTByteArray tag) { return Arrays.equals(this.value, tag.value); }
 
     @Override
     public String toMSONString() {
-        StringBuilder stringbuilder = new StringBuilder("[B;");
+        final StringBuilder stringbuilder = new StringBuilder("[B;");
         for (int i = 0; i < this.value.length; i++) {
             if (i != 0) {
                 stringbuilder.append(',');

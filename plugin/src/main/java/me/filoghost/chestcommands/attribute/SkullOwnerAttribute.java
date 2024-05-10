@@ -1,7 +1,6 @@
 /*
- * Copyright (C) filoghost and contributors
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) filoghost and contributors SPDX-License-Identifier:
+ * GPL-3.0-or-later
  */
 package me.filoghost.chestcommands.attribute;
 
@@ -11,13 +10,9 @@ public class SkullOwnerAttribute implements IconAttribute {
 
     private final String skullOwner;
 
-    public SkullOwnerAttribute(String skullOwner, AttributeErrorHandler errorHandler) {
-        this.skullOwner = skullOwner;
-    }
-    
+    public SkullOwnerAttribute(final String skullOwner, final AttributeErrorHandler errorHandler) { this.skullOwner = skullOwner; }
+
     @Override
-    public void apply(InternalConfigurableIcon icon) {
-        icon.setSkullOwner(skullOwner);
-    }
+    public void apply(final InternalConfigurableIcon icon) { icon.setSkullOwner(this.skullOwner); }
 
 }

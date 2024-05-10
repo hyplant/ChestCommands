@@ -1,7 +1,5 @@
 /*
- * Copyright (C) Jan Schultke
- *
- * SPDX-License-Identifier: MIT
+ * Copyright (C) Jan Schultke SPDX-License-Identifier: MIT
  */
 package me.filoghost.chestcommands.util.nbt;
 
@@ -29,9 +27,7 @@ public abstract class NBTTag {
      *
      * @return the type id
      */
-    public byte getTypeId() {
-        return getType().getId();
-    }
+    public byte getTypeId() { return this.getType().getId(); }
 
     /**
      * Returns a Mojangson string depicting this NBT tag.
@@ -43,23 +39,17 @@ public abstract class NBTTag {
     // MISC
 
     @Override
-    public boolean equals(Object obj) {
-        if (obj instanceof NBTTag) {
-            NBTTag tag = (NBTTag) obj;
-            return this.getType() == tag.getType()
-                    && this.getValue().equals(tag.getValue());
+    public boolean equals(final Object obj) {
+        if (obj instanceof final NBTTag tag) {
+            return this.getType() == tag.getType() && this.getValue().equals(tag.getValue());
         }
         return false;
     }
 
     @Override
-    public int hashCode() {
-        return getValue().hashCode();
-    }
+    public int hashCode() { return this.getValue().hashCode(); }
 
     @Override
-    public String toString() {
-        return toMSONString();
-    }
+    public String toString() { return this.toMSONString(); }
 
 }

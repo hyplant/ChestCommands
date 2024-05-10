@@ -1,7 +1,6 @@
 /*
- * Copyright (C) filoghost and contributors
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) filoghost and contributors SPDX-License-Identifier:
+ * GPL-3.0-or-later
  */
 package me.filoghost.chestcommands.icon;
 
@@ -53,13 +52,13 @@ public abstract class BaseConfigurableIcon implements Icon {
 
     private ItemStack cachedRendering; // Cache the rendered item when possible and if state hasn't changed
 
-    public BaseConfigurableIcon(Material material) {
+    public BaseConfigurableIcon(final Material material) {
         this.material = material;
         this.amount = 1;
     }
 
     protected boolean shouldCacheRendering() {
-        if (placeholdersEnabled && hasDynamicPlaceholders()) {
+        if (this.placeholdersEnabled && this.hasDynamicPlaceholders()) {
             return false;
         } else {
             return true;
@@ -67,183 +66,158 @@ public abstract class BaseConfigurableIcon implements Icon {
     }
 
     private boolean hasDynamicPlaceholders() {
-        return (name != null && name.hasDynamicPlaceholders())
-                || (lore != null && lore.hasDynamicPlaceholders())
-                || (skullOwner != null && skullOwner.hasDynamicPlaceholders());
+        return (this.name != null && this.name.hasDynamicPlaceholders()) || (this.lore != null && this.lore.hasDynamicPlaceholders())
+                || (this.skullOwner != null && this.skullOwner.hasDynamicPlaceholders());
     }
 
-    public void setMaterial(@NotNull Material material) {
+    public void setMaterial(@NotNull final Material material) {
         this.material = material;
-        cachedRendering = null;
+        this.cachedRendering = null;
     }
 
-    public @NotNull Material getMaterial() {
-        return material;
-    }
+    public @NotNull Material getMaterial() { return this.material; }
 
-    public void setAmount(int amount) {
+    public void setAmount(final int amount) {
         Preconditions.checkArgument(amount > 0, "amount must be greater than 0");
         this.amount = Math.min(amount, 127);
-        cachedRendering = null;
+        this.cachedRendering = null;
     }
 
-    public int getAmount() {
-        return amount;
-    }
+    public int getAmount() { return this.amount; }
 
-    public void setDurability(short durability) {
+    public void setDurability(final short durability) {
         Preconditions.checkArgument(durability >= 0, "durability must be 0 or greater");
         this.durability = durability;
-        cachedRendering = null;
+        this.cachedRendering = null;
     }
 
-    public short getDurability() {
-        return durability;
-    }
+    public short getDurability() { return this.durability; }
 
-    public void setNBTData(@Nullable String nbtData) {
+    public void setNBTData(@Nullable final String nbtData) {
         if (nbtData != null) {
             try {
                 MojangsonParser.parse(nbtData);
-            } catch (MojangsonParseException e) {
+            } catch (final MojangsonParseException e) {
                 throw new IllegalArgumentException("invalid nbtData", e);
             }
         }
         this.nbtData = nbtData;
-        cachedRendering = null;
+        this.cachedRendering = null;
     }
 
-    public @Nullable String getNBTData() {
-        return nbtData;
-    }
+    public @Nullable String getNBTData() { return this.nbtData; }
 
-    public void setName(@Nullable String name) {
+    public void setName(@Nullable final String name) {
         this.name = PlaceholderString.of(name);
-        cachedRendering = null;
+        this.cachedRendering = null;
     }
 
     public @Nullable String getName() {
-        if (name != null) {
-            return name.getOriginalValue();
+        if (this.name != null) {
+            return this.name.getOriginalValue();
         } else {
             return null;
         }
     }
 
-    public void setLore(@Nullable String... lore) {
-        setLore(lore != null ? Arrays.asList(lore) : null);
-    }
+    public void setLore(@Nullable final String... lore) { this.setLore(lore != null ? Arrays.asList(lore) : null); }
 
-    public void setLore(@Nullable List<String> lore) {
+    public void setLore(@Nullable final List<String> lore) {
         if (lore != null) {
-            this.lore = new PlaceholderStringList(CollectionUtils.toArrayList(lore, element -> {
-                return element != null ? element : "";
-            }));
+            this.lore = new PlaceholderStringList(CollectionUtils.toArrayList(lore, element -> (element != null ? element : "")));
         } else {
             this.lore = null;
         }
-        cachedRendering = null;
+        this.cachedRendering = null;
     }
 
     public @Nullable List<String> getLore() {
-        if (lore != null) {
-            return new ArrayList<>(lore.getOriginalValue());
+        if (this.lore != null) {
+            return new ArrayList<>(this.lore.getOriginalValue());
         } else {
             return null;
         }
     }
 
-    public void setEnchantments(@Nullable Map<Enchantment, Integer> enchantments) {
+    public void setEnchantments(@Nullable final Map<Enchantment, Integer> enchantments) {
         this.enchantments = CollectionUtils.newHashMap(enchantments);
-        cachedRendering = null;
+        this.cachedRendering = null;
     }
 
-    public @Nullable Map<Enchantment, Integer> getEnchantments() {
-        return CollectionUtils.newHashMap(enchantments);
-    }
+    public @Nullable Map<Enchantment, Integer> getEnchantments() { return CollectionUtils.newHashMap(this.enchantments); }
 
-    public void addEnchantment(@NotNull Enchantment enchantment) {
-        addEnchantment(enchantment, 1);
-    }
+    public void addEnchantment(@NotNull final Enchantment enchantment) { this.addEnchantment(enchantment, 1); }
 
-    public void addEnchantment(@NotNull Enchantment enchantment, int level) {
-        if (enchantments == null) {
-            enchantments = new HashMap<>();
+    public void addEnchantment(@NotNull final Enchantment enchantment, final int level) {
+        if (this.enchantments == null) {
+            this.enchantments = new HashMap<>();
         }
-        enchantments.put(enchantment, level);
-        cachedRendering = null;
+        this.enchantments.put(enchantment, level);
+        this.cachedRendering = null;
     }
 
-    public void removeEnchantment(@NotNull Enchantment enchantment) {
-        if (enchantments == null) {
+    public void removeEnchantment(@NotNull final Enchantment enchantment) {
+        if (this.enchantments == null) {
             return;
         }
-        enchantments.remove(enchantment);
-        cachedRendering = null;
+        this.enchantments.remove(enchantment);
+        this.cachedRendering = null;
     }
 
-    public @Nullable Color getLeatherColor() {
-        return leatherColor;
-    }
+    public @Nullable Color getLeatherColor() { return this.leatherColor; }
 
-    public void setLeatherColor(@Nullable Color leatherColor) {
+    public void setLeatherColor(@Nullable final Color leatherColor) {
         this.leatherColor = leatherColor;
-        cachedRendering = null;
+        this.cachedRendering = null;
     }
 
     public @Nullable String getSkullOwner() {
-        if (skullOwner != null) {
-            return skullOwner.getOriginalValue();
+        if (this.skullOwner != null) {
+            return this.skullOwner.getOriginalValue();
         } else {
             return null;
         }
     }
 
-    public void setSkullOwner(@Nullable String skullOwner) {
+    public void setSkullOwner(@Nullable final String skullOwner) {
         this.skullOwner = PlaceholderString.of(skullOwner);
-        cachedRendering = null;
+        this.cachedRendering = null;
     }
 
-    public @Nullable DyeColor getBannerColor() {
-        return bannerColor;
-    }
+    public @Nullable DyeColor getBannerColor() { return this.bannerColor; }
 
-    public void setBannerColor(@Nullable DyeColor bannerColor) {
+    public void setBannerColor(@Nullable final DyeColor bannerColor) {
         this.bannerColor = bannerColor;
-        cachedRendering = null;
+        this.cachedRendering = null;
     }
 
-    public @Nullable List<Pattern> getBannerPatterns() {
-        return CollectionUtils.newArrayList(bannerPatterns);
+    public @Nullable List<Pattern> getBannerPatterns() { return CollectionUtils.newArrayList(this.bannerPatterns); }
+
+    public void setBannerPatterns(@Nullable final Pattern... bannerPatterns) {
+        this.setBannerPatterns(bannerPatterns != null ? Arrays.asList(bannerPatterns) : null);
     }
 
-    public void setBannerPatterns(@Nullable Pattern... bannerPatterns) {
-        setBannerPatterns(bannerPatterns != null ? Arrays.asList(bannerPatterns) : null);
-    }
-
-    public void setBannerPatterns(@Nullable List<Pattern> bannerPatterns) {
+    public void setBannerPatterns(@Nullable final List<Pattern> bannerPatterns) {
         this.bannerPatterns = CollectionUtils.newArrayList(bannerPatterns);
-        cachedRendering = null;
+        this.cachedRendering = null;
     }
 
-    public boolean isPlaceholdersEnabled() {
-        return placeholdersEnabled;
-    }
+    public boolean isPlaceholdersEnabled() { return this.placeholdersEnabled; }
 
-    public void setPlaceholdersEnabled(boolean placeholdersEnabled) {
+    public void setPlaceholdersEnabled(final boolean placeholdersEnabled) {
         this.placeholdersEnabled = placeholdersEnabled;
-        cachedRendering = null;
+        this.cachedRendering = null;
     }
 
-    public @Nullable String renderName(Player viewer) {
-        if (name == null) {
+    public @Nullable String renderName(final Player viewer) {
+        if (this.name == null) {
             return null;
         }
-        if (!placeholdersEnabled) {
-            return name.getOriginalValue();
+        if (!this.placeholdersEnabled) {
+            return this.name.getOriginalValue();
         }
 
-        String name = this.name.getValue(viewer);
+        final String name = this.name.getValue(viewer);
 
         if (name.isEmpty()) {
             // Add a color to display the name empty
@@ -253,55 +227,52 @@ public abstract class BaseConfigurableIcon implements Icon {
         }
     }
 
-    public @Nullable List<String> renderLore(Player viewer) {
-        if (lore == null) {
+    public @Nullable List<String> renderLore(final Player viewer) {
+        if (this.lore == null) {
             return null;
         }
-        if (!placeholdersEnabled) {
-            return lore.getOriginalValue();
+        if (!this.placeholdersEnabled) {
+            return this.lore.getOriginalValue();
         }
 
-        return lore.getValue(viewer);
+        return this.lore.getValue(viewer);
     }
 
     @Override
     @SuppressWarnings("deprecation")
-    public ItemStack render(@NotNull Player viewer) {
-        if (shouldCacheRendering() && cachedRendering != null) {
+    public ItemStack render(@NotNull final Player viewer) {
+        if (this.shouldCacheRendering() && this.cachedRendering != null) {
             // Performance: return a cached item
-            return cachedRendering;
+            return this.cachedRendering;
         }
 
-        ItemStack itemStack = new ItemStack(material, amount, durability);
+        final ItemStack itemStack = new ItemStack(this.material, this.amount, this.durability);
 
         // First try to apply NBT data
-        if (nbtData != null) {
-            Bukkit.getUnsafe().modifyItemStack(itemStack, nbtData);
+        if (this.nbtData != null) {
+            Bukkit.getUnsafe().modifyItemStack(itemStack, this.nbtData);
         }
 
-        // Then apply data from config nodes, overwriting NBT data if there are conflicting values
-        ItemMeta itemMeta = itemStack.getItemMeta();
+        // Then apply data from config nodes, overwriting NBT data if there are
+        // conflicting values
+        final ItemMeta itemMeta = itemStack.getItemMeta();
 
         if (itemMeta != null) {
-            itemMeta.setDisplayName(renderName(viewer));
-            itemMeta.setLore(renderLore(viewer));
+            itemMeta.setDisplayName(this.renderName(viewer));
+            itemMeta.setLore(this.renderLore(viewer));
 
-            if (leatherColor != null && itemMeta instanceof LeatherArmorMeta) {
-                ((LeatherArmorMeta) itemMeta).setColor(leatherColor);
+            if (this.leatherColor != null && itemMeta instanceof LeatherArmorMeta) {
+                ((LeatherArmorMeta) itemMeta).setColor(this.leatherColor);
             }
 
-            if (skullOwner != null && itemMeta instanceof SkullMeta) {
-                String skullOwner = this.skullOwner.getValue(viewer);
+            if (this.skullOwner != null && itemMeta instanceof SkullMeta) {
+                final String skullOwner = this.skullOwner.getValue(viewer);
                 ((SkullMeta) itemMeta).setOwner(skullOwner);
             }
 
             if (itemMeta instanceof BannerMeta) {
-                BannerMeta bannerMeta = (BannerMeta) itemMeta;
-                if (bannerColor != null) {
-                    bannerMeta.setBaseColor(bannerColor);
-                }
-                if (bannerPatterns != null) {
-                    ((BannerMeta) itemMeta).setPatterns(bannerPatterns);
+                if (this.bannerPatterns != null) {
+                    ((BannerMeta) itemMeta).setPatterns(this.bannerPatterns);
                 }
             }
 
@@ -313,13 +284,12 @@ public abstract class BaseConfigurableIcon implements Icon {
             itemStack.setItemMeta(itemMeta);
         }
 
-        if (enchantments != null) {
-            enchantments.forEach(itemStack::addUnsafeEnchantment);
+        if (this.enchantments != null) {
+            this.enchantments.forEach(itemStack::addUnsafeEnchantment);
         }
 
-
-        if (shouldCacheRendering()) {
-            cachedRendering = itemStack;
+        if (this.shouldCacheRendering()) {
+            this.cachedRendering = itemStack;
         }
 
         return itemStack;

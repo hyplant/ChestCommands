@@ -1,7 +1,6 @@
 /*
- * Copyright (C) filoghost and contributors
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) filoghost and contributors SPDX-License-Identifier:
+ * GPL-3.0-or-later
  */
 package me.filoghost.chestcommands.placeholder;
 
@@ -27,21 +26,16 @@ public enum DefaultPlaceholder {
         }
     });
 
-
     private final String identifier;
     private final PlaceholderReplacer replacer;
 
-    DefaultPlaceholder(String identifier, PlaceholderReplacer replacer) {
+    DefaultPlaceholder(final String identifier, final PlaceholderReplacer replacer) {
         this.identifier = identifier;
         this.replacer = replacer;
     }
 
-    public String getIdentifier() {
-        return identifier;
-    }
+    public String getIdentifier() { return this.identifier; }
 
-    public PlaceholderReplacer getReplacer() {
-        return replacer;
-    }
+    public PlaceholderReplacer getReplacer() { return this.replacer; }
 
 }

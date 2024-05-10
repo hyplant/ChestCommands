@@ -1,7 +1,6 @@
 /*
- * Copyright (C) filoghost and contributors
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) filoghost and contributors SPDX-License-Identifier:
+ * GPL-3.0-or-later
  */
 package me.filoghost.chestcommands.attribute;
 
@@ -13,16 +12,14 @@ public class PriceAttribute implements IconAttribute {
 
     private final double price;
 
-    public PriceAttribute(double price, AttributeErrorHandler errorHandler) throws ParseException {
+    public PriceAttribute(final double price, final AttributeErrorHandler errorHandler) throws ParseException {
         if (price < 0) {
             throw new ParseException(Errors.Parsing.zeroOrPositive);
         }
         this.price = price;
     }
-    
+
     @Override
-    public void apply(InternalConfigurableIcon icon) {
-        icon.setRequiredMoney(price);
-    }
+    public void apply(final InternalConfigurableIcon icon) { icon.setRequiredMoney(this.price); }
 
 }

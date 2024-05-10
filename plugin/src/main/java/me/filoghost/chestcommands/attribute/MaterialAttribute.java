@@ -1,7 +1,6 @@
 /*
- * Copyright (C) filoghost and contributors
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) filoghost and contributors SPDX-License-Identifier:
+ * GPL-3.0-or-later
  */
 package me.filoghost.chestcommands.attribute;
 
@@ -14,13 +13,11 @@ public class MaterialAttribute implements IconAttribute {
 
     private final Material material;
 
-    public MaterialAttribute(String serializedMaterial, AttributeErrorHandler errorHandler) throws ParseException {
+    public MaterialAttribute(final String serializedMaterial, final AttributeErrorHandler errorHandler) throws ParseException {
         this.material = MaterialParser.parseMaterial(serializedMaterial);
     }
 
     @Override
-    public void apply(InternalConfigurableIcon icon) {
-        icon.setMaterial(material);
-    }
+    public void apply(final InternalConfigurableIcon icon) { icon.setMaterial(this.material); }
 
 }

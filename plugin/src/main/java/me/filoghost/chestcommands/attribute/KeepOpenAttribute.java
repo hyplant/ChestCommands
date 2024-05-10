@@ -1,7 +1,6 @@
 /*
- * Copyright (C) filoghost and contributors
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) filoghost and contributors SPDX-License-Identifier:
+ * GPL-3.0-or-later
  */
 package me.filoghost.chestcommands.attribute;
 
@@ -12,7 +11,7 @@ public class KeepOpenAttribute implements IconAttribute {
 
     private final ClickResult clickResult;
 
-    public KeepOpenAttribute(boolean keepOpen, AttributeErrorHandler errorHandler) {
+    public KeepOpenAttribute(final boolean keepOpen, final AttributeErrorHandler errorHandler) {
         if (keepOpen) {
             this.clickResult = ClickResult.KEEP_OPEN;
         } else {
@@ -21,8 +20,6 @@ public class KeepOpenAttribute implements IconAttribute {
     }
 
     @Override
-    public void apply(InternalConfigurableIcon icon) {
-        icon.setClickResult(clickResult);
-    }
+    public void apply(final InternalConfigurableIcon icon) { icon.setClickResult(this.clickResult); }
 
 }

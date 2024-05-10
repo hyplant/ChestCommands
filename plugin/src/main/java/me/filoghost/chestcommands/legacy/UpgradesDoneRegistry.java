@@ -1,11 +1,8 @@
 /*
- * Copyright (C) filoghost and contributors
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) filoghost and contributors SPDX-License-Identifier:
+ * GPL-3.0-or-later
  */
 package me.filoghost.chestcommands.legacy;
-
-import me.filoghost.chestcommands.legacy.upgrade.Upgrade;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -16,50 +13,49 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
 
+import me.filoghost.chestcommands.legacy.upgrade.Upgrade;
+
 public class UpgradesDoneRegistry {
 
     private final Path saveFile;
     private final Set<String> upgradesDone;
     private boolean needSave;
 
-    public UpgradesDoneRegistry(Path saveFile) throws IOException {
+    public UpgradesDoneRegistry(final Path saveFile) throws IOException {
         this.saveFile = saveFile;
         this.upgradesDone = new HashSet<>();
 
         if (Files.isRegularFile(saveFile)) {
             try (Stream<String> lines = Files.lines(saveFile)) {
-                lines.filter(s -> !s.startsWith("#"))
-                        .forEach(upgradesDone::add);
+                lines.filter(s -> !s.startsWith("#")).forEach(this.upgradesDone::add);
             }
         }
     }
 
     public void setAllDone() {
-        for (Upgrade upgrade : UpgradeList.getOrderedUpgrades()) {
-            setDone(upgrade);
+        for (final Upgrade upgrade : UpgradeList.getOrderedUpgrades()) {
+            this.setDone(upgrade);
         }
     }
 
-    public void setDone(Upgrade upgrade) {
-        if (upgradesDone.add(upgrade.getID())) {
-            needSave = true;
+    public void setDone(final Upgrade upgrade) {
+        if (this.upgradesDone.add(upgrade.getID())) {
+            this.needSave = true;
         }
     }
 
-    public boolean isDone(Upgrade upgrade) {
-        return upgradesDone.contains(upgrade.getID());
-    }
+    public boolean isDone(final Upgrade upgrade) { return this.upgradesDone.contains(upgrade.getID()); }
 
     public void save() throws IOException {
-        if (needSave) {
-            List<String> lines = new ArrayList<>();
+        if (this.needSave) {
+            final List<String> lines = new ArrayList<>();
             lines.add("#");
             lines.add("# WARNING: manually editing this file is not recommended");
             lines.add("#");
-            lines.addAll(upgradesDone);
-            Files.createDirectories(saveFile.getParent());
-            Files.write(saveFile, lines);
-            needSave = false;
+            lines.addAll(this.upgradesDone);
+            Files.createDirectories(this.saveFile.getParent());
+            Files.write(this.saveFile, lines);
+            this.needSave = false;
         }
     }
 

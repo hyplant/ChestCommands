@@ -1,7 +1,6 @@
 /*
- * Copyright (C) filoghost and contributors
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) filoghost and contributors SPDX-License-Identifier:
+ * GPL-3.0-or-later
  */
 package me.filoghost.chestcommands.api;
 
@@ -10,9 +9,11 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 /**
- * Common interface extended by other interfaces, represents a simplified {@link Icon} with a settable click handler.
+ * Common interface extended by other interfaces, represents a simplified
+ * {@link Icon} with a settable click handler.
  * <p>
- * This interface exists to avoid having to implement {@link Icon#onClick(MenuView, Player)} via subclassing.
+ * This interface exists to avoid having to implement
+ * {@link Icon#onClick(MenuView, Player)} via subclassing.
  *
  * @see ConfigurableIcon
  * @see StaticIcon
@@ -34,20 +35,21 @@ public interface ClickableIcon extends Icon {
      * @return the current click handler, null if absent
      * @since 1
      */
-    @Nullable ClickHandler getClickHandler();
+    @Nullable
+    ClickHandler getClickHandler();
 
     /**
      * {@inheritDoc}
      * <p>
-     * This default implementation delegates the click event to the current click handler. This method should not be
-     * overridden.
+     * This default implementation delegates the click event to the current click
+     * handler. This method should not be overridden.
      *
      * @since 1
      */
     @Override
-    default void onClick(@NotNull MenuView menuView, @NotNull Player clicker) {
-        if (getClickHandler() != null) {
-            getClickHandler().onClick(menuView, clicker);
+    default void onClick(@NotNull final MenuView menuView, @NotNull final Player clicker) {
+        if (this.getClickHandler() != null) {
+            this.getClickHandler().onClick(menuView, clicker);
         }
     }
 

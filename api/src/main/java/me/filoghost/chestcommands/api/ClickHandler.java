@@ -1,7 +1,6 @@
 /*
- * Copyright (C) filoghost and contributors
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) filoghost and contributors SPDX-License-Identifier:
+ * GPL-3.0-or-later
  */
 package me.filoghost.chestcommands.api;
 
@@ -20,7 +19,8 @@ public interface ClickHandler {
      * Called when a player clicks on an icon associated with this handler.
      *
      * @param menuView the menu view inside which the icon was clicked
-     * @param clicker  the player that clicked an icon (identical to {@link MenuView#getViewer()})
+     * @param clicker  the player that clicked an icon (identical to
+     *                     {@link MenuView#getViewer()})
      * @since 1
      */
     void onClick(@NotNull MenuView menuView, @NotNull Player clicker);

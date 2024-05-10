@@ -1,7 +1,5 @@
 /*
- * Copyright (C) Jan Schultke
- *
- * SPDX-License-Identifier: MIT
+ * Copyright (C) Jan Schultke SPDX-License-Identifier: MIT
  */
 package me.filoghost.chestcommands.util.nbt;
 
@@ -12,52 +10,32 @@ public final class NBTFloat extends NBTTag implements Cloneable {
 
     private float value;
 
-    public NBTFloat(float value) {
-        this.value = value;
-    }
+    public NBTFloat(final float value) { this.value = value; }
 
     @Override
-    public Float getValue() {
-        return value;
-    }
+    public Float getValue() { return this.value; }
 
-    public float getFloatValue() {
-        return value;
-    }
+    public float getFloatValue() { return this.value; }
 
-    public void setFloatValue(float value) {
-        this.value = value;
-    }
+    public void setFloatValue(final float value) { this.value = value; }
 
     @Override
-    public NBTType getType() {
-        return NBTType.FLOAT;
-    }
+    public NBTType getType() { return NBTType.FLOAT; }
 
     // MISC
 
     @Override
-    public boolean equals(Object obj) {
-        return obj instanceof NBTFloat && equals((NBTFloat) obj);
-    }
+    public boolean equals(final Object obj) { return obj instanceof NBTFloat && this.equals((NBTFloat) obj); }
 
-    public boolean equals(NBTFloat tag) {
-        return this.value == tag.value;
-    }
+    public boolean equals(final NBTFloat tag) { return this.value == tag.value; }
 
     @Override
-    public int hashCode() {
-        return Float.hashCode(value);
-    }
+    public int hashCode() { return Float.hashCode(this.value); }
 
     @Override
-    public String toMSONString() {
-        return value + "f";
-    }
+    public String toMSONString() { return this.value + "f"; }
 
     @Override
-    public NBTFloat clone() {
-        return new NBTFloat(value);
-    }
+    public NBTFloat clone() { return new NBTFloat(this.value); }
 
 }

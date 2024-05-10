@@ -1,7 +1,6 @@
 /*
- * Copyright (C) filoghost and contributors
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) filoghost and contributors SPDX-License-Identifier:
+ * GPL-3.0-or-later
  */
 package me.filoghost.chestcommands.config;
 
@@ -32,99 +31,97 @@ public class ConfigManager extends BaseConfigManager {
     private final ConfigLoader placeholdersConfigLoader;
     private final MappedConfigLoader<Lang> langConfigLoader;
 
-    public ConfigManager(Path rootDataFolder) {
+    public ConfigManager(final Path rootDataFolder) {
         super(rootDataFolder);
 
-        settingsConfigLoader = getMappedConfigLoader("config.yml", Settings.class);
-        placeholdersConfigLoader = getConfigLoader("custom-placeholders.yml");
-        langConfigLoader = getMappedConfigLoader("lang.yml", Lang.class);
+        this.settingsConfigLoader = this.getMappedConfigLoader("config.yml", Settings.class);
+        this.placeholdersConfigLoader = this.getConfigLoader("custom-placeholders.yml");
+        this.langConfigLoader = this.getMappedConfigLoader("lang.yml", Lang.class);
     }
 
-    public void tryLoadSettings(ErrorCollector errorCollector) {
+    public void tryLoadSettings(final ErrorCollector errorCollector) {
         Settings settings;
         try {
-            settings = settingsConfigLoader.init();
-        } catch (ConfigException e) {
-            logConfigInitException(errorCollector, settingsConfigLoader.getFile(), e);
+            settings = this.settingsConfigLoader.init();
+        } catch (final ConfigException e) {
+            this.logConfigInitException(errorCollector, this.settingsConfigLoader.getFile(), e);
             settings = new Settings();
         }
         Settings.setInstance(settings);
     }
 
-    public void tryLoadLang(ErrorCollector errorCollector) {
+    public void tryLoadLang(final ErrorCollector errorCollector) {
         Lang lang;
         try {
-            lang = langConfigLoader.init();
-        } catch (ConfigException e) {
-            logConfigInitException(errorCollector, langConfigLoader.getFile(), e);
+            lang = this.langConfigLoader.init();
+        } catch (final ConfigException e) {
+            this.logConfigInitException(errorCollector, this.langConfigLoader.getFile(), e);
             lang = new Lang();
         }
         Lang.setInstance(lang);
     }
 
-    public CustomPlaceholders tryLoadCustomPlaceholders(ErrorCollector errorCollector) {
-        CustomPlaceholders placeholders = new CustomPlaceholders();
+    public CustomPlaceholders tryLoadCustomPlaceholders(final ErrorCollector errorCollector) {
+        final CustomPlaceholders placeholders = new CustomPlaceholders();
 
         try {
-            FileConfig placeholdersConfig = placeholdersConfigLoader.init();
+            final FileConfig placeholdersConfig = this.placeholdersConfigLoader.init();
             placeholders.load(placeholdersConfig, errorCollector);
-        } catch (ConfigException t) {
-            logConfigInitException(errorCollector, placeholdersConfigLoader.getFile(), t);
+        } catch (final ConfigException t) {
+            this.logConfigInitException(errorCollector, this.placeholdersConfigLoader.getFile(), t);
         }
 
         return placeholders;
     }
 
-    public void tryCreateDefault(ErrorCollector errorCollector, ConfigLoader configLoader) {
+    public void tryCreateDefault(final ErrorCollector errorCollector, final ConfigLoader configLoader) {
         try {
             configLoader.createDefault();
-        } catch (ConfigException e) {
-            logConfigInitException(errorCollector, configLoader.getFile(), e);
+        } catch (final ConfigException e) {
+            this.logConfigInitException(errorCollector, configLoader.getFile(), e);
         }
     }
 
-    public Path getMenusFolder() {
-        return rootDataFolder.resolve("menu");
-    }
+    public Path getMenusFolder() { return this.rootDataFolder.resolve("menu"); }
 
     public List<Path> getMenuFiles() throws IOException {
-        Preconditions.checkState(Files.isDirectory(getMenusFolder()), "menus folder doesn't exist");
+        Preconditions.checkState(Files.isDirectory(this.getMenusFolder()), "menus folder doesn't exist");
 
-        try (Stream<Path> paths = Files.walk(getMenusFolder(), FileVisitOption.FOLLOW_LINKS)) {
+        try (Stream<Path> paths = Files.walk(this.getMenusFolder(), FileVisitOption.FOLLOW_LINKS)) {
             return paths.filter(this::isYamlFile).collect(Collectors.toList());
         }
     }
 
-    private void logConfigInitException(ErrorCollector errorCollector, Path file, ConfigException e) {
+    private void logConfigInitException(final ErrorCollector errorCollector, final Path file, final ConfigException e) {
         errorCollector.add(e, Errors.Config.initException(file));
     }
 
-    public List<LoadedMenu> tryLoadMenus(ErrorCollector errorCollector) {
-        List<LoadedMenu> loadedMenus = new ArrayList<>();
+    public List<LoadedMenu> tryLoadMenus(final ErrorCollector errorCollector) {
+        final List<LoadedMenu> loadedMenus = new ArrayList<>();
         List<Path> menuFiles;
 
         try {
-            menuFiles = getMenuFiles();
-        } catch (IOException e) {
-            errorCollector.add(e, Errors.Config.menuListIOException(getMenusFolder()));
+            menuFiles = this.getMenuFiles();
+        } catch (final IOException e) {
+            errorCollector.add(e, Errors.Config.menuListIOException(this.getMenusFolder()));
             return Collections.emptyList();
         }
 
-        for (Path menuFile : menuFiles) {
-            ConfigLoader menuConfigLoader = new ConfigLoader(rootDataFolder, menuFile);
+        for (final Path menuFile : menuFiles) {
+            final ConfigLoader menuConfigLoader = new ConfigLoader(this.rootDataFolder, menuFile);
 
             try {
-                FileConfig menuConfig = menuConfigLoader.load();
+                final FileConfig menuConfig = menuConfigLoader.load();
                 loadedMenus.add(MenuParser.loadMenu(menuConfig, errorCollector));
-            } catch (ConfigException e) {
-                logConfigInitException(errorCollector, menuConfigLoader.getFile(), e);
+            } catch (final ConfigException e) {
+                this.logConfigInitException(errorCollector, menuConfigLoader.getFile(), e);
             }
         }
 
         return loadedMenus;
     }
 
-    private boolean isYamlFile(Path path) {
+    private boolean isYamlFile(final Path path) {
         return Files.isRegularFile(path) && path.getFileName().toString().toLowerCase().endsWith(".yml");
     }
 

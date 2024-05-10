@@ -1,7 +1,6 @@
 /*
- * Copyright (C) filoghost and contributors
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) filoghost and contributors SPDX-License-Identifier:
+ * GPL-3.0-or-later
  */
 package me.filoghost.chestcommands.attribute;
 
@@ -13,16 +12,14 @@ public class ExpLevelsAttribute implements IconAttribute {
 
     private final int expLevels;
 
-    public ExpLevelsAttribute(int expLevels, AttributeErrorHandler errorHandler) throws ParseException {
+    public ExpLevelsAttribute(final int expLevels, final AttributeErrorHandler errorHandler) throws ParseException {
         if (expLevels < 0) {
             throw new ParseException(Errors.Parsing.zeroOrPositive);
         }
         this.expLevels = expLevels;
     }
-    
+
     @Override
-    public void apply(InternalConfigurableIcon icon) {
-        icon.setRequiredExpLevel(expLevels);
-    }
+    public void apply(final InternalConfigurableIcon icon) { icon.setRequiredExpLevel(this.expLevels); }
 
 }

@@ -1,7 +1,6 @@
 /*
- * Copyright (C) filoghost and contributors
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) filoghost and contributors SPDX-License-Identifier:
+ * GPL-3.0-or-later
  */
 package me.filoghost.chestcommands.attribute;
 
@@ -11,13 +10,11 @@ public class ViewPermissionAttribute implements IconAttribute {
 
     private final String viewPermission;
 
-    public ViewPermissionAttribute(String viewPermission, AttributeErrorHandler errorHandler) {
+    public ViewPermissionAttribute(final String viewPermission, final AttributeErrorHandler errorHandler) {
         this.viewPermission = viewPermission;
     }
 
     @Override
-    public void apply(InternalConfigurableIcon icon) {
-        icon.setViewPermission(viewPermission);
-    }
+    public void apply(final InternalConfigurableIcon icon) { icon.setViewPermission(this.viewPermission); }
 
 }

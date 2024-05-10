@@ -1,9 +1,11 @@
 /*
- * Copyright (C) filoghost and contributors
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) filoghost and contributors SPDX-License-Identifier:
+ * GPL-3.0-or-later
  */
 package me.filoghost.chestcommands.placeholder;
+
+import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.Nullable;
 
 import me.filoghost.chestcommands.ChestCommands;
 import me.filoghost.chestcommands.api.PlaceholderReplacer;
@@ -11,8 +13,6 @@ import me.filoghost.chestcommands.placeholder.scanner.PlaceholderMatch;
 import me.filoghost.fcommons.collection.CaseInsensitiveHashMap;
 import me.filoghost.fcommons.collection.CaseInsensitiveLinkedHashMap;
 import me.filoghost.fcommons.collection.CaseInsensitiveMap;
-import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.Nullable;
 
 public class PlaceholderRegistry {
 
@@ -22,43 +22,42 @@ public class PlaceholderRegistry {
     // <identifier, <pluginName, placeholder>>
     private final CaseInsensitiveMap<CaseInsensitiveMap<Placeholder>> externalPlaceholders = new CaseInsensitiveHashMap<>();
 
-    public void registerInternalPlaceholder(String identifier, PlaceholderReplacer replacer) {
-        internalPlaceholders.put(identifier, new Placeholder(ChestCommands.getInstance(), replacer));
+    public void registerInternalPlaceholder(final String identifier, final PlaceholderReplacer replacer) {
+        this.internalPlaceholders.put(identifier, new Placeholder(ChestCommands.getInstance(), replacer));
     }
 
-    public void registerExternalPlaceholder(Plugin plugin, String identifier, PlaceholderReplacer placeholderReplacer) {
-        externalPlaceholders
-                .computeIfAbsent(identifier, CaseInsensitiveLinkedHashMap::new)
-                .put(plugin.getName(), new Placeholder(plugin, placeholderReplacer));
+    public void registerExternalPlaceholder(final Plugin plugin, final String identifier, final PlaceholderReplacer placeholderReplacer) {
+        this.externalPlaceholders.computeIfAbsent(identifier, CaseInsensitiveLinkedHashMap::new).put(plugin.getName(),
+                new Placeholder(plugin, placeholderReplacer));
     }
 
-    public boolean unregisterExternalPlaceholder(Plugin plugin, String identifier) {
-        CaseInsensitiveMap<Placeholder> externalPlaceholdersByPlugin = externalPlaceholders.get(identifier);
+    public boolean unregisterExternalPlaceholder(final Plugin plugin, final String identifier) {
+        final CaseInsensitiveMap<Placeholder> externalPlaceholdersByPlugin = this.externalPlaceholders.get(identifier);
 
         if (externalPlaceholdersByPlugin == null) {
             return false;
         }
 
-        boolean removed = externalPlaceholdersByPlugin.remove(plugin.getName()) != null;
+        final boolean removed = externalPlaceholdersByPlugin.remove(plugin.getName()) != null;
 
         if (externalPlaceholdersByPlugin.isEmpty()) {
-            externalPlaceholders.remove(identifier);
+            this.externalPlaceholders.remove(identifier);
         }
 
         return removed;
     }
 
-    public @Nullable Placeholder getPlaceholder(PlaceholderMatch placeholderMatch) {
-        String identifier = placeholderMatch.getIdentifier();
+    public @Nullable Placeholder getPlaceholder(final PlaceholderMatch placeholderMatch) {
+        final String identifier = placeholderMatch.getIdentifier();
 
         if (placeholderMatch.getPluginNamespace() == null) {
-            Placeholder internalPlaceholder = internalPlaceholders.get(identifier);
+            final Placeholder internalPlaceholder = this.internalPlaceholders.get(identifier);
             if (internalPlaceholder != null) {
                 return internalPlaceholder;
             }
         }
 
-        CaseInsensitiveMap<Placeholder> externalPlaceholdersByPlugin = externalPlaceholders.get(identifier);
+        final CaseInsensitiveMap<Placeholder> externalPlaceholdersByPlugin = this.externalPlaceholders.get(identifier);
         if (externalPlaceholdersByPlugin == null) {
             return null;
         }

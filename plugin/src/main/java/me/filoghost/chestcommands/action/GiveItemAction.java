@@ -1,7 +1,6 @@
 /*
- * Copyright (C) filoghost and contributors
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) filoghost and contributors SPDX-License-Identifier:
+ * GPL-3.0-or-later
  */
 package me.filoghost.chestcommands.action;
 
@@ -14,15 +13,13 @@ public class GiveItemAction implements Action {
 
     private final ItemStack itemToGive;
 
-    public GiveItemAction(String serializedAction) throws ParseException {
-        ItemStackParser reader = new ItemStackParser(serializedAction, true);
+    public GiveItemAction(final String serializedAction) throws ParseException {
+        final ItemStackParser reader = new ItemStackParser(serializedAction, true);
         reader.checkNotAir();
-        itemToGive = reader.createStack();
+        this.itemToGive = reader.createStack();
     }
 
     @Override
-    public void execute(Player player) {
-        player.getInventory().addItem(itemToGive.clone());
-    }
+    public void execute(final Player player) { player.getInventory().addItem(this.itemToGive.clone()); }
 
 }

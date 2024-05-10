@@ -1,9 +1,15 @@
 /*
- * Copyright (C) filoghost and contributors
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) filoghost and contributors SPDX-License-Identifier:
+ * GPL-3.0-or-later
  */
 package me.filoghost.chestcommands.logging;
+
+import java.util.List;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+
+import com.google.common.collect.Lists;
 
 import me.filoghost.chestcommands.ChestCommands;
 import me.filoghost.chestcommands.legacy.UpgradeExecutorException;
@@ -14,27 +20,22 @@ import me.filoghost.fcommons.config.exception.ConfigException;
 import me.filoghost.fcommons.config.exception.ConfigSyntaxException;
 import me.filoghost.fcommons.logging.ErrorCollector;
 import me.filoghost.fcommons.logging.ErrorLog;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class PrintableErrorCollector extends ErrorCollector {
 
-
     @Override
     public void logToConsole() {
-        StringBuilder output = new StringBuilder();
+        final StringBuilder output = new StringBuilder();
 
-        if (errors.size() > 0) {
-            output.append(ChestCommands.CHAT_PREFIX).append(ChatColor.RED).append("Encountered ").append(errors.size()).append(" error(s) on load:\n");
+        if (this.errors.size() > 0) {
+            output.append(ChestCommands.CHAT_PREFIX).append(ChatColor.RED).append("Encountered ").append(this.errors.size())
+                    .append(" error(s) on load:\n");
             output.append(" \n");
 
             int index = 1;
-            for (ErrorLog error : errors) {
-                ErrorPrintInfo printFormat = getErrorPrintInfo(index, error);
-                printError(output, printFormat);
+            for (final ErrorLog error : this.errors) {
+                final ErrorPrintInfo printFormat = this.getErrorPrintInfo(index, error);
+                PrintableErrorCollector.printError(output, printFormat);
                 index++;
             }
         }
@@ -42,8 +43,8 @@ public class PrintableErrorCollector extends ErrorCollector {
         Bukkit.getConsoleSender().sendMessage(output.toString());
     }
 
-    private ErrorPrintInfo getErrorPrintInfo(int index, ErrorLog error) {
-        List<String> message = new ArrayList<>(error.getMessage().asList());
+    private ErrorPrintInfo getErrorPrintInfo(final int index, final ErrorLog error) {
+        final List<String> message = Lists.newArrayList(error.getMessage());
         String details = null;
         Throwable cause = error.getCause();
 
@@ -54,9 +55,7 @@ public class PrintableErrorCollector extends ErrorCollector {
                 details = ((ConfigSyntaxException) cause).getSyntaxErrorDetails();
                 cause = null; // Do not print stacktrace for syntax exceptions
 
-            } else if (cause instanceof ConfigException
-                    || cause instanceof ParseException
-                    || cause instanceof UpgradeTaskException
+            } else if (cause instanceof ConfigException || cause instanceof ParseException || cause instanceof UpgradeTaskException
                     || cause instanceof UpgradeExecutorException) {
                 message.add(cause.getMessage());
                 cause = cause.getCause(); // Print the cause (or nothing if null), not our "known" exception
@@ -67,7 +66,7 @@ public class PrintableErrorCollector extends ErrorCollector {
         }
     }
 
-    private static void printError(StringBuilder output, ErrorPrintInfo error) {
+    private static void printError(final StringBuilder output, final ErrorPrintInfo error) {
         output.append(ChatColor.YELLOW).append(error.getIndex()).append(") ");
         output.append(ChatColor.WHITE).append(MessagePartJoiner.join(error.getMessage()));
 

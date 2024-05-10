@@ -1,7 +1,6 @@
 /*
- * Copyright (C) filoghost and contributors
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) filoghost and contributors SPDX-License-Identifier:
+ * GPL-3.0-or-later
  */
 package me.filoghost.chestcommands.attribute;
 
@@ -13,16 +12,14 @@ public class AmountAttribute implements IconAttribute {
 
     private final int amount;
 
-    public AmountAttribute(int amount, AttributeErrorHandler errorHandler) throws ParseException {
+    public AmountAttribute(final int amount, final AttributeErrorHandler errorHandler) throws ParseException {
         if (amount < 0) {
             throw new ParseException(Errors.Parsing.zeroOrPositive);
         }
         this.amount = amount;
     }
-    
+
     @Override
-    public void apply(InternalConfigurableIcon icon) {
-        icon.setAmount(amount);
-    }
+    public void apply(final InternalConfigurableIcon icon) { icon.setAmount(this.amount); }
 
 }

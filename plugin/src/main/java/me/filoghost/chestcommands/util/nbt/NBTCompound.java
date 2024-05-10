@@ -1,7 +1,5 @@
 /*
- * Copyright (C) Jan Schultke
- *
- * SPDX-License-Identifier: MIT
+ * Copyright (C) Jan Schultke SPDX-License-Identifier: MIT
  */
 package me.filoghost.chestcommands.util.nbt;
 
@@ -24,13 +22,9 @@ public final class NBTCompound extends NBTTag {
 
     private final Map<String, NBTTag> value;
 
-    public NBTCompound(Map<String, NBTTag> value) {
-        this.value = new LinkedHashMap<>(value);
-    }
+    public NBTCompound(final Map<String, NBTTag> value) { this.value = new LinkedHashMap<>(value); }
 
-    public NBTCompound() {
-        this.value = new LinkedHashMap<>();
-    }
+    public NBTCompound() { this.value = new LinkedHashMap<>(); }
 
     // GETTERS
 
@@ -39,19 +33,13 @@ public final class NBTCompound extends NBTTag {
      *
      * @return the size of this compound
      */
-    public int size() {
-        return value.size();
-    }
+    public int size() { return this.value.size(); }
 
     @Override
-    public Map<String, NBTTag> getValue() {
-        return value;
-    }
+    public Map<String, NBTTag> getValue() { return this.value; }
 
     @Override
-    public NBTType getType() {
-        return NBTType.COMPOUND;
-    }
+    public NBTType getType() { return NBTType.COMPOUND; }
 
     /**
      * Returns a tag named with the given key.
@@ -60,11 +48,11 @@ public final class NBTCompound extends NBTTag {
      * @return a byte
      * @throws NoSuchElementException if there is no tag with given name
      */
-    public NBTTag getTag(String key) {
-        if (!hasKey(key)) {
+    public NBTTag getTag(final String key) {
+        if (!this.hasKey(key)) {
             throw new NoSuchElementException(key);
         }
-        return value.get(key);
+        return this.value.get(key);
     }
 
     /**
@@ -74,8 +62,8 @@ public final class NBTCompound extends NBTTag {
      * @return a byte
      * @throws NoSuchElementException if there is no byte with given name
      */
-    public byte getByte(String key) {
-        NBTTag tag = value.get(key);
+    public byte getByte(final String key) {
+        final NBTTag tag = this.value.get(key);
         if (!(tag instanceof NBTByte)) {
             throw new NoSuchElementException(key);
         }
@@ -89,8 +77,8 @@ public final class NBTCompound extends NBTTag {
      * @return an short
      * @throws NoSuchElementException if there is no short with given name
      */
-    public short getShort(String key) {
-        NBTTag tag = value.get(key);
+    public short getShort(final String key) {
+        final NBTTag tag = this.value.get(key);
         if (!(tag instanceof NBTShort)) {
             throw new NoSuchElementException(key);
         }
@@ -104,8 +92,8 @@ public final class NBTCompound extends NBTTag {
      * @return an int
      * @throws NoSuchElementException if there is no int with given name
      */
-    public int getInt(String key) {
-        NBTTag tag = value.get(key);
+    public int getInt(final String key) {
+        final NBTTag tag = this.value.get(key);
         if (!(tag instanceof NBTInt)) {
             throw new NoSuchElementException(key);
         }
@@ -119,8 +107,8 @@ public final class NBTCompound extends NBTTag {
      * @return an long
      * @throws NoSuchElementException if there is no long with given name
      */
-    public long getLong(String key) {
-        NBTTag tag = value.get(key);
+    public long getLong(final String key) {
+        final NBTTag tag = this.value.get(key);
         if (!(tag instanceof NBTLong)) {
             throw new NoSuchElementException(key);
         }
@@ -134,8 +122,8 @@ public final class NBTCompound extends NBTTag {
      * @return a float
      * @throws NoSuchElementException if there is no float with given name
      */
-    public float getFloat(String key) {
-        NBTTag tag = value.get(key);
+    public float getFloat(final String key) {
+        final NBTTag tag = this.value.get(key);
         if (!(tag instanceof NBTFloat)) {
             throw new NoSuchElementException(key);
         }
@@ -149,8 +137,8 @@ public final class NBTCompound extends NBTTag {
      * @return a double
      * @throws NoSuchElementException if there is no int with given name
      */
-    public double getDouble(String key) {
-        NBTTag tag = value.get(key);
+    public double getDouble(final String key) {
+        final NBTTag tag = this.value.get(key);
         if (!(tag instanceof NBTDouble)) {
             throw new NoSuchElementException(key);
         }
@@ -164,8 +152,8 @@ public final class NBTCompound extends NBTTag {
      * @return a byte array
      * @throws NoSuchElementException if there is no int with given name
      */
-    public byte[] getByteArray(String key) {
-        NBTTag tag = value.get(key);
+    public byte[] getByteArray(final String key) {
+        final NBTTag tag = this.value.get(key);
         if (!(tag instanceof NBTByteArray)) {
             throw new NoSuchElementException(key);
         }
@@ -179,8 +167,8 @@ public final class NBTCompound extends NBTTag {
      * @return a string
      * @throws NoSuchElementException if there is no int with given name
      */
-    public String getString(String key) {
-        NBTTag tag = value.get(key);
+    public String getString(final String key) {
+        final NBTTag tag = this.value.get(key);
         if (!(tag instanceof NBTString)) {
             throw new NoSuchElementException(key);
         }
@@ -194,9 +182,7 @@ public final class NBTCompound extends NBTTag {
      * @return a list
      * @throws NoSuchElementException if there is no int with given name
      */
-    public List<NBTTag> getList(String key) {
-        return getTagList(key).getValue();
-    }
+    public List<NBTTag> getList(final String key) { return this.getTagList(key).getValue(); }
 
     /**
      * Returns a list named with the given key.
@@ -205,8 +191,8 @@ public final class NBTCompound extends NBTTag {
      * @return a list
      * @throws NoSuchElementException if there is no list with given name
      */
-    public NBTList getTagList(String key) {
-        NBTTag tag = value.get(key);
+    public NBTList getTagList(final String key) {
+        final NBTTag tag = this.value.get(key);
         if (!(tag instanceof NBTList)) {
             throw new NoSuchElementException(key);
         }
@@ -220,9 +206,7 @@ public final class NBTCompound extends NBTTag {
      * @return a list
      * @throws NoSuchElementException if there is no compound with given name
      */
-    public Map<String, NBTTag> getCompound(String key) {
-        return getCompoundTag(key).getValue();
-    }
+    public Map<String, NBTTag> getCompound(final String key) { return this.getCompoundTag(key).getValue(); }
 
     /**
      * Returns a compound named with the given key.
@@ -231,8 +215,8 @@ public final class NBTCompound extends NBTTag {
      * @return a compound
      * @throws NoSuchElementException if there is no compound with given name
      */
-    public NBTCompound getCompoundTag(String key) {
-        NBTTag tag = value.get(key);
+    public NBTCompound getCompoundTag(final String key) {
+        final NBTTag tag = this.value.get(key);
         if (!(tag instanceof NBTCompound)) {
             throw new NoSuchElementException(key);
         }
@@ -246,8 +230,8 @@ public final class NBTCompound extends NBTTag {
      * @return a int array
      * @throws NoSuchElementException if there is no int array with given name
      */
-    public int[] getIntArray(String key) {
-        NBTTag tag = value.get(key);
+    public int[] getIntArray(final String key) {
+        final NBTTag tag = this.value.get(key);
         if (!(tag instanceof NBTIntArray)) {
             throw new NoSuchElementException(key);
         }
@@ -261,8 +245,8 @@ public final class NBTCompound extends NBTTag {
      * @return a int array
      * @throws NoSuchElementException if there is no int array with given name
      */
-    public long[] getLongArray(String key) {
-        NBTTag tag = value.get(key);
+    public long[] getLongArray(final String key) {
+        final NBTTag tag = this.value.get(key);
         if (!(tag instanceof NBTLongArray)) {
             throw new NoSuchElementException(key);
         }
@@ -274,9 +258,7 @@ public final class NBTCompound extends NBTTag {
      *
      * @return an immutable set
      */
-    public Set<String> getKeys() {
-        return Collections.unmodifiableSet(value.keySet());
-    }
+    public Set<String> getKeys() { return Collections.unmodifiableSet(this.value.keySet()); }
 
     // PREDICATES
 
@@ -285,9 +267,7 @@ public final class NBTCompound extends NBTTag {
      *
      * @return whether this compound is empty
      */
-    public boolean isEmpty() {
-        return value.isEmpty();
-    }
+    public boolean isEmpty() { return this.value.isEmpty(); }
 
     /**
      * Returns whether this compound tag contains the given key.
@@ -295,20 +275,19 @@ public final class NBTCompound extends NBTTag {
      * @param key the given key
      * @return true if the tag contains the given key
      */
-    public boolean hasKey(String key) {
-        return value.containsKey(key);
-    }
+    public boolean hasKey(final String key) { return this.value.containsKey(key); }
 
     /**
-     * Returns whether this compound tag contains the given key and its value is of a given type.
+     * Returns whether this compound tag contains the given key and its value is of
+     * a given type.
      *
      * @param key  the given key
      * @param type the type of the value
      * @return true if the tag contains an entry with given key and of given type
      */
-    public boolean hasKeyOfType(String key, NBTType type) {
+    public boolean hasKeyOfType(final String key, final NBTType type) {
         Objects.requireNonNull(type);
-        return value.containsKey(key) && value.get(key).getType() == type;
+        return this.value.containsKey(key) && this.value.get(key).getType() == type;
     }
 
     // MUTATORS
@@ -319,9 +298,7 @@ public final class NBTCompound extends NBTTag {
      * @param name the tag name
      * @param tag  the tag value
      */
-    public void put(String name, NBTTag tag) {
-        this.value.put(name, tag);
-    }
+    public void put(final String name, final NBTTag tag) { this.value.put(name, tag); }
 
     /**
      * Put the given key and value into the compound tag.
@@ -329,9 +306,7 @@ public final class NBTCompound extends NBTTag {
      * @param key   they key
      * @param value the value
      */
-    public void putByteArray(String key, byte[] value) {
-        put(key, new NBTByteArray(value));
-    }
+    public void putByteArray(final String key, final byte[] value) { this.put(key, new NBTByteArray(value)); }
 
     /**
      * Put the given key and value into the compound tag.
@@ -339,9 +314,7 @@ public final class NBTCompound extends NBTTag {
      * @param key   they key
      * @param value the value
      */
-    public void putByte(String key, byte value) {
-        put(key, new NBTByte(value));
-    }
+    public void putByte(final String key, final byte value) { this.put(key, new NBTByte(value)); }
 
     /**
      * Put the given key and value into the compound tag.
@@ -349,9 +322,7 @@ public final class NBTCompound extends NBTTag {
      * @param key   they key
      * @param value the value
      */
-    public void putDouble(String key, double value) {
-        put(key, new NBTDouble(value));
-    }
+    public void putDouble(final String key, final double value) { this.put(key, new NBTDouble(value)); }
 
     /**
      * Put the given key and value into the compound tag.
@@ -359,9 +330,7 @@ public final class NBTCompound extends NBTTag {
      * @param key   they key
      * @param value the value
      */
-    public void putFloat(String key, float value) {
-        put(key, new NBTFloat(value));
-    }
+    public void putFloat(final String key, final float value) { this.put(key, new NBTFloat(value)); }
 
     /**
      * Put the given key and value into the compound tag.
@@ -369,9 +338,7 @@ public final class NBTCompound extends NBTTag {
      * @param key   they key
      * @param value the value
      */
-    public void putIntArray(String key, int[] value) {
-        put(key, new NBTIntArray(value));
-    }
+    public void putIntArray(final String key, final int[] value) { this.put(key, new NBTIntArray(value)); }
 
     /**
      * Put the given key and value into the compound tag.
@@ -379,9 +346,7 @@ public final class NBTCompound extends NBTTag {
      * @param key   they key
      * @param value the value
      */
-    public void putLongArray(String key, long[] value) {
-        put(key, new NBTLongArray(value));
-    }
+    public void putLongArray(final String key, final long[] value) { this.put(key, new NBTLongArray(value)); }
 
     /**
      * Put the given key and value into the compound tag.
@@ -389,9 +354,7 @@ public final class NBTCompound extends NBTTag {
      * @param key   they key
      * @param value the valu
      */
-    public void putInt(String key, int value) {
-        put(key, new NBTInt(value));
-    }
+    public void putInt(final String key, final int value) { this.put(key, new NBTInt(value)); }
 
     /**
      * Put the given key and value into the compound tag.
@@ -399,9 +362,7 @@ public final class NBTCompound extends NBTTag {
      * @param key   they key
      * @param value the value
      */
-    public void putLong(String key, long value) {
-        put(key, new NBTLong(value));
-    }
+    public void putLong(final String key, final long value) { this.put(key, new NBTLong(value)); }
 
     /**
      * Put the given key and value into the compound tag.
@@ -409,9 +370,7 @@ public final class NBTCompound extends NBTTag {
      * @param key   they key
      * @param value the value
      */
-    public void putShort(String key, short value) {
-        put(key, new NBTShort(value));
-    }
+    public void putShort(final String key, final short value) { this.put(key, new NBTShort(value)); }
 
     /**
      * Put the given key and value into the compound tag.
@@ -419,9 +378,7 @@ public final class NBTCompound extends NBTTag {
      * @param key   they key
      * @param value the value
      */
-    public void putString(String key, String value) {
-        put(key, new NBTString(value));
-    }
+    public void putString(final String key, final String value) { this.put(key, new NBTString(value)); }
 
     // ITERATION
 
@@ -430,34 +387,25 @@ public final class NBTCompound extends NBTTag {
      *
      * @param action the action
      */
-    public void forEach(BiConsumer<String, ? super NBTTag> action) {
-        this.value.forEach(action);
-    }
+    public void forEach(final BiConsumer<String, ? super NBTTag> action) { this.value.forEach(action); }
 
     // MISC
 
     @Override
-    public boolean equals(Object obj) {
-        return obj instanceof NBTCompound && equals((NBTCompound) obj);
-    }
+    public boolean equals(final Object obj) { return obj instanceof NBTCompound && this.equals((NBTCompound) obj); }
 
-    public boolean equals(NBTCompound tag) {
-        return this.isEmpty() && tag.isEmpty()
-                || this.value.equals(tag.value);
-    }
+    public boolean equals(final NBTCompound tag) { return this.isEmpty() && tag.isEmpty() || this.value.equals(tag.value); }
 
     @Override
     public String toMSONString() {
-        StringBuilder builder = new StringBuilder("{");
-        Set<String> keys = this.value.keySet();
+        final StringBuilder builder = new StringBuilder("{");
+        final Set<String> keys = this.value.keySet();
 
-        for (String key : keys) {
+        for (final String key : keys) {
             if (builder.length() > 1) {
                 builder.append(',');
             }
-            builder
-                    .append(SIMPLE_STRING.matcher(key).matches() ? key : NBTString.toMSONString(key))
-                    .append(':')
+            builder.append(NBTCompound.SIMPLE_STRING.matcher(key).matches() ? key : NBTString.toMSONString(key)).append(':')
                     .append(this.value.get(key).toMSONString());
         }
 

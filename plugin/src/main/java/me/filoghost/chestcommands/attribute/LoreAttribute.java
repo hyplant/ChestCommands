@@ -1,7 +1,6 @@
 /*
- * Copyright (C) filoghost and contributors
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) filoghost and contributors SPDX-License-Identifier:
+ * GPL-3.0-or-later
  */
 package me.filoghost.chestcommands.attribute;
 
@@ -15,12 +14,10 @@ import java.util.List;
 public class LoreAttribute implements IconAttribute {
 
     private final List<String> lore;
-    
-    public LoreAttribute(List<String> lore, AttributeErrorHandler errorHandler) {
-        this.lore = colorLore(lore);
-    }
 
-    private List<String> colorLore(List<String> input) {
+    public LoreAttribute(final List<String> lore, final AttributeErrorHandler errorHandler) { this.lore = this.colorLore(lore); }
+
+    private List<String> colorLore(final List<String> input) {
         return CollectionUtils.toArrayList(input, line -> {
             if (!line.isEmpty()) {
                 return Settings.get().default_color__lore + Colors.addColors(line);
@@ -31,8 +28,6 @@ public class LoreAttribute implements IconAttribute {
     }
 
     @Override
-    public void apply(InternalConfigurableIcon icon) {
-        icon.setLore(lore);
-    }
+    public void apply(final InternalConfigurableIcon icon) { icon.setLore(this.lore); }
 
 }

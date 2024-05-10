@@ -1,7 +1,6 @@
 /*
- * Copyright (C) filoghost and contributors
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) filoghost and contributors SPDX-License-Identifier:
+ * GPL-3.0-or-later
  */
 package me.filoghost.chestcommands.action;
 
@@ -15,14 +14,14 @@ public class GiveMoneyAction implements Action {
 
     private final double moneyToGive;
 
-    public GiveMoneyAction(String serializedAction) throws ParseException {
-        moneyToGive = NumberParser.getStrictlyPositiveDouble(serializedAction);
+    public GiveMoneyAction(final String serializedAction) throws ParseException {
+        this.moneyToGive = NumberParser.getStrictlyPositiveDouble(serializedAction);
     }
 
     @Override
-    public void execute(Player player) {
+    public void execute(final Player player) {
         if (VaultEconomyHook.INSTANCE.isEnabled()) {
-            VaultEconomyHook.giveMoney(player, moneyToGive);
+            VaultEconomyHook.giveMoney(player, this.moneyToGive);
         } else {
             player.sendMessage(Errors.User.configurationError("Vault with a compatible economy plugin not found"));
         }

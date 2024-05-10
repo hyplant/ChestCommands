@@ -1,7 +1,6 @@
 /*
- * Copyright (C) filoghost and contributors
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) filoghost and contributors SPDX-License-Identifier:
+ * GPL-3.0-or-later
  */
 package me.filoghost.chestcommands.icon.requirement.item;
 
@@ -16,39 +15,36 @@ import java.util.List;
 public class RequiredItems implements Requirement {
 
     private final List<RequiredItem> items;
-    
-    public RequiredItems(List<RequiredItem> items) {
-        this.items = ImmutableList.copyOf(items);
-    }
+
+    public RequiredItems(final List<RequiredItem> items) { this.items = ImmutableList.copyOf(items); }
 
     @Override
-    public boolean hasCost(Player player) {
-        InventoryTakeHelper inventoryTakeHelper = new InventoryTakeHelper(player.getInventory());
-        boolean hasItems = inventoryTakeHelper.prepareTakeItems(items);
+    public boolean hasCost(final Player player) {
+        final InventoryTakeHelper inventoryTakeHelper = new InventoryTakeHelper(player.getInventory());
+        final boolean hasItems = inventoryTakeHelper.prepareTakeItems(this.items);
 
         if (!hasItems) {
-            for (RequiredItem item : items) {
-                player.sendMessage(Lang.get().no_required_item
-                        .replace("{material}", Utils.formatEnum(item.getMaterial()))
+            for (final RequiredItem item : this.items) {
+                player.sendMessage(Lang.get().no_required_item.replace("{material}", Utils.formatEnum(item.getMaterial()))
                         .replace("{amount}", Integer.toString(item.getAmount()))
                         .replace("{durability}", item.hasRestrictiveDurability() ? Short.toString(item.getDurability()) : Lang.get().any));
             }
         }
-        
+
         return hasItems;
     }
 
     @Override
-    public boolean takeCost(Player player) {
-        InventoryTakeHelper inventoryTakeHelper = new InventoryTakeHelper(player.getInventory());
-        boolean hasItems = inventoryTakeHelper.prepareTakeItems(items);
+    public boolean takeCost(final Player player) {
+        final InventoryTakeHelper inventoryTakeHelper = new InventoryTakeHelper(player.getInventory());
+        final boolean hasItems = inventoryTakeHelper.prepareTakeItems(this.items);
 
         if (!hasItems) {
             return false;
         }
-        
+
         inventoryTakeHelper.applyTakeItems();
         return true;
     }
-    
+
 }

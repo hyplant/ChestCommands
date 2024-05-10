@@ -1,7 +1,5 @@
 /*
- * Copyright (C) Jan Schultke
- *
- * SPDX-License-Identifier: MIT
+ * Copyright (C) Jan Schultke SPDX-License-Identifier: MIT
  */
 package me.filoghost.chestcommands.util.nbt;
 
@@ -12,52 +10,32 @@ public final class NBTLong extends NBTTag implements Cloneable {
 
     private long value;
 
-    public NBTLong(long value) {
-        this.value = value;
-    }
+    public NBTLong(final long value) { this.value = value; }
 
     @Override
-    public Long getValue() {
-        return value;
-    }
+    public Long getValue() { return this.value; }
 
-    public long getLongValue() {
-        return value;
-    }
+    public long getLongValue() { return this.value; }
 
-    public void setLongValue(long value) {
-        this.value = value;
-    }
+    public void setLongValue(final long value) { this.value = value; }
 
     @Override
-    public NBTType getType() {
-        return NBTType.LONG;
-    }
+    public NBTType getType() { return NBTType.LONG; }
 
     // MISC
 
     @Override
-    public boolean equals(Object obj) {
-        return obj instanceof NBTLong && equals((NBTLong) obj);
-    }
+    public boolean equals(final Object obj) { return obj instanceof NBTLong && this.equals((NBTLong) obj); }
 
-    public boolean equals(NBTLong tag) {
-        return this.value == tag.value;
-    }
+    public boolean equals(final NBTLong tag) { return this.value == tag.value; }
 
     @Override
-    public int hashCode() {
-        return Long.hashCode(value);
-    }
+    public int hashCode() { return Long.hashCode(this.value); }
 
     @Override
-    public String toMSONString() {
-        return value + "L";
-    }
+    public String toMSONString() { return this.value + "L"; }
 
     @Override
-    public NBTLong clone() {
-        return new NBTLong(value);
-    }
+    public NBTLong clone() { return new NBTLong(this.value); }
 
 }

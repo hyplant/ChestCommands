@@ -1,7 +1,6 @@
 /*
- * Copyright (C) filoghost and contributors
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) filoghost and contributors SPDX-License-Identifier:
+ * GPL-3.0-or-later
  */
 package me.filoghost.chestcommands.action;
 
@@ -11,13 +10,9 @@ public class DisabledAction implements Action {
 
     private final String errorMessage;
 
-    public DisabledAction(String errorMessage) {
-        this.errorMessage = errorMessage;
-    }
+    public DisabledAction(final String errorMessage) { this.errorMessage = errorMessage; }
 
     @Override
-    public void execute(Player player) {
-        player.sendMessage(errorMessage);
-    }
+    public void execute(final Player player) { player.sendMessage(this.errorMessage); }
 
 }

@@ -1,11 +1,12 @@
 /*
- * Copyright (C) filoghost and contributors
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) filoghost and contributors SPDX-License-Identifier:
+ * GPL-3.0-or-later
  */
 package me.filoghost.chestcommands.api;
 
-import me.filoghost.chestcommands.api.internal.BackendAPI;
+import java.util.List;
+import java.util.Map;
+
 import org.bukkit.Color;
 import org.bukkit.DyeColor;
 import org.bukkit.Material;
@@ -15,11 +16,11 @@ import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.List;
-import java.util.Map;
+import me.filoghost.chestcommands.api.internal.BackendAPI;
 
 /**
- * An {@link Icon} that displays an {@link ItemStack} based on its configurable properties.
+ * An {@link Icon} that displays an {@link ItemStack} based on its configurable
+ * properties.
  *
  * @since 1
  */
@@ -32,7 +33,7 @@ public interface ConfigurableIcon extends ClickableIcon {
      * @return the created icon
      * @since 1
      */
-    static @NotNull ConfigurableIcon create(@NotNull Material material) {
+    static @NotNull ConfigurableIcon create(@NotNull final Material material) {
         return BackendAPI.getImplementation().createConfigurableIcon(material);
     }
 
@@ -52,7 +53,8 @@ public interface ConfigurableIcon extends ClickableIcon {
      * @see ItemStack#getType()
      * @since 1
      */
-    @NotNull Material getMaterial();
+    @NotNull
+    Material getMaterial();
 
     /**
      * Sets the amount of the displayed item.
@@ -91,9 +93,9 @@ public interface ConfigurableIcon extends ClickableIcon {
     short getDurability();
 
     /**
-     * Sets the NBT data of the displayed item. When creating the displayed item, all other options have higher priority
-     * and override NBT values (for example, {@link ConfigurableIcon#setName(String)} overrides the name inside NBT
-     * data).
+     * Sets the NBT data of the displayed item. When creating the displayed item,
+     * all other options have higher priority and override NBT values (for example,
+     * {@link ConfigurableIcon#setName(String)} overrides the name inside NBT data).
      *
      * @param nbtData the new NBT data as JSON string, null to remove
      * @throws IllegalArgumentException if the NBT data is not valid
@@ -108,10 +110,12 @@ public interface ConfigurableIcon extends ClickableIcon {
      * @see ConfigurableIcon#setNBTData(String)
      * @since 1
      */
-    @Nullable String getNBTData();
+    @Nullable
+    String getNBTData();
 
     /**
-     * Sets the name, which is the first line in the tooltip of the displayed item. Can contain colors.
+     * Sets the name, which is the first line in the tooltip of the displayed item.
+     * Can contain colors.
      *
      * @param name the new name, null to remove
      * @since 1
@@ -125,10 +129,12 @@ public interface ConfigurableIcon extends ClickableIcon {
      * @see ConfigurableIcon#setName(String)
      * @since 1
      */
-    @Nullable String getName();
+    @Nullable
+    String getName();
 
     /**
-     * Sets the lore, which is the lines below the name in the tooltip of the displayed item. Can contain colors.
+     * Sets the lore, which is the lines below the name in the tooltip of the
+     * displayed item. Can contain colors.
      *
      * @param lore the new lore as list of lines, null to remove
      * @since 1
@@ -151,12 +157,14 @@ public interface ConfigurableIcon extends ClickableIcon {
      * @see ConfigurableIcon#setLore(List)
      * @since 1
      */
-    @Nullable List<String> getLore();
+    @Nullable
+    List<String> getLore();
 
     /**
      * Sets the enchantments of the displayed item, removing existing ones.
      *
-     * @param enchantments the new enchantments, as map of enchantment and level, null to remove all enchantments
+     * @param enchantments the new enchantments, as map of enchantment and level,
+     *                         null to remove all enchantments
      * @since 1
      */
     void setEnchantments(@Nullable Map<Enchantment, Integer> enchantments);
@@ -164,11 +172,13 @@ public interface ConfigurableIcon extends ClickableIcon {
     /**
      * Returns the enchantments of the displayed item.
      *
-     * @return the current enchantments, as map of enchantment and level, null if absent
+     * @return the current enchantments, as map of enchantment and level, null if
+     *         absent
      * @see ConfigurableIcon#setEnchantments(Map)
      * @since 1
      */
-    @Nullable Map<Enchantment, Integer> getEnchantments();
+    @Nullable
+    Map<Enchantment, Integer> getEnchantments();
 
     /**
      * Adds a level 1 enchantment to the displayed item.
@@ -212,7 +222,8 @@ public interface ConfigurableIcon extends ClickableIcon {
      * @see ConfigurableIcon#setLeatherColor(Color)
      * @since 1
      */
-    @Nullable Color getLeatherColor();
+    @Nullable
+    Color getLeatherColor();
 
     /**
      * Sets the skull owner of the displayed player head.
@@ -231,10 +242,12 @@ public interface ConfigurableIcon extends ClickableIcon {
      * @see ConfigurableIcon#setSkullOwner(String)
      * @since 1
      */
-    @Nullable String getSkullOwner();
+    @Nullable
+    String getSkullOwner();
 
     /**
-     * Sets the color of the displayed banner. <b>Only used before Minecraft 1.13.</b>
+     * Sets the color of the displayed banner. <b>Only used before Minecraft
+     * 1.13.</b>
      * <p>
      * This value is ignored if the material is not a banner.
      *
@@ -250,7 +263,8 @@ public interface ConfigurableIcon extends ClickableIcon {
      * @see ConfigurableIcon#setBannerColor(DyeColor)
      * @since 1
      */
-    @Nullable DyeColor getBannerColor();
+    @Nullable
+    DyeColor getBannerColor();
 
     /**
      * Sets the patterns of the displayed banner.
@@ -278,7 +292,8 @@ public interface ConfigurableIcon extends ClickableIcon {
      * @see ConfigurableIcon#setBannerPatterns(List)
      * @since 1
      */
-    @Nullable List<Pattern> getBannerPatterns();
+    @Nullable
+    List<Pattern> getBannerPatterns();
 
     /**
      * Sets if placeholders should be enabled.
@@ -289,7 +304,8 @@ public interface ConfigurableIcon extends ClickableIcon {
     void setPlaceholdersEnabled(boolean enabled);
 
     /**
-     * Returns if placeholders are currently enabled. By default they are not enabled.
+     * Returns if placeholders are currently enabled. By default they are not
+     * enabled.
      *
      * @return true if placeholders are currently enabled, false otherwise
      * @since 1

@@ -1,7 +1,6 @@
 /*
- * Copyright (C) filoghost and contributors
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) filoghost and contributors SPDX-License-Identifier:
+ * GPL-3.0-or-later
  */
 package me.filoghost.chestcommands.config;
 
@@ -19,15 +18,11 @@ public class Lang implements MappedConfig {
     public String no_exp = "&cYou need {levels} XP levels for this.";
     public String menu_not_found = "&cMenu not found! " + Errors.User.notifyStaffRequest;
     public String any = "any"; // Used in no_required_item when durability is not restrictive
-    
-    private static Lang instance;
-    
-    static void setInstance(Lang instance) {
-        Lang.instance = instance;
-    }
 
-    public static Lang get() {
-        return instance;
-    }
-    
+    private static Lang instance;
+
+    static void setInstance(final Lang instance) { Lang.instance = instance; }
+
+    public static Lang get() { return Lang.instance; }
+
 }

@@ -1,19 +1,19 @@
 /*
- * Copyright (C) filoghost and contributors
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) filoghost and contributors SPDX-License-Identifier:
+ * GPL-3.0-or-later
  */
 package me.filoghost.chestcommands.inventory;
+
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import me.filoghost.chestcommands.api.Icon;
 import me.filoghost.chestcommands.api.MenuView;
 import me.filoghost.chestcommands.icon.RefreshableIcon;
 import me.filoghost.chestcommands.menu.BaseMenu;
 import me.filoghost.chestcommands.menu.MenuManager;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 public class DefaultMenuView implements MenuView {
 
@@ -21,56 +21,50 @@ public class DefaultMenuView implements MenuView {
     private final Player viewer;
     private final InventoryGrid bukkitInventory;
 
-    public DefaultMenuView(@NotNull BaseMenu menu, @NotNull Player viewer) {
+    public DefaultMenuView(@NotNull final BaseMenu menu, @NotNull final Player viewer) {
         this.menu = menu;
         this.viewer = viewer;
         this.bukkitInventory = new InventoryGrid(new MenuInventoryHolder(this), menu.getRows(), menu.getTitle());
-        refresh();
+        this.refresh();
     }
 
     @Override
     public void refresh() {
-        for (int i = 0; i < menu.getIcons().getSize(); i++) {
-            Icon icon = menu.getIcons().getByIndex(i);
+        for (int i = 0; i < this.menu.getIcons().getSize(); i++) {
+            final Icon icon = this.menu.getIcons().getByIndex(i);
 
             if (icon == null) {
-                bukkitInventory.setByIndex(i, null);
+                this.bukkitInventory.setByIndex(i, null);
             } else if (icon instanceof RefreshableIcon) {
-                ItemStack newItemStack = ((RefreshableIcon) icon).updateRendering(viewer, bukkitInventory.getByIndex(i));
-                bukkitInventory.setByIndex(i, newItemStack);
+                final ItemStack newItemStack = ((RefreshableIcon) icon).updateRendering(this.viewer, this.bukkitInventory.getByIndex(i));
+                this.bukkitInventory.setByIndex(i, newItemStack);
             } else {
-                bukkitInventory.setByIndex(i, icon.render(viewer));
+                this.bukkitInventory.setByIndex(i, icon.render(this.viewer));
             }
         }
     }
 
     @Override
     public void close() {
-        if (viewer.isOnline() && MenuManager.getOpenMenuView(viewer) == this) {
-            viewer.closeInventory();
+        if (this.viewer.isOnline() && MenuManager.getOpenMenuView(this.viewer) == this) {
+            this.viewer.closeInventory();
         }
     }
 
-    public void open() {
-        viewer.openInventory(bukkitInventory.getInventory());
-    }
+    public void open() { this.viewer.openInventory(this.bukkitInventory.getInventory()); }
 
-    public @Nullable Icon getIcon(int slot) {
-        if (slot < 0 || slot >= bukkitInventory.getSize()) {
+    public @Nullable Icon getIcon(final int slot) {
+        if (slot < 0 || slot >= this.bukkitInventory.getSize()) {
             return null;
         }
 
-        return menu.getIcons().getByIndex(slot);
+        return this.menu.getIcons().getByIndex(slot);
     }
 
     @Override
-    public @NotNull BaseMenu getMenu() {
-        return menu;
-    }
+    public @NotNull BaseMenu getMenu() { return this.menu; }
 
     @Override
-    public @NotNull Player getViewer() {
-        return viewer;
-    }
+    public @NotNull Player getViewer() { return this.viewer; }
 
 }

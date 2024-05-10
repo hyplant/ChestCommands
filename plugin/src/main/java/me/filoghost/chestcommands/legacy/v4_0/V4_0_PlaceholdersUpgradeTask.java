@@ -1,9 +1,15 @@
 /*
- * Copyright (C) filoghost and contributors
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) filoghost and contributors SPDX-License-Identifier:
+ * GPL-3.0-or-later
  */
 package me.filoghost.chestcommands.legacy.v4_0;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.List;
+
+import org.apache.commons.text.StringEscapeUtils;
 
 import me.filoghost.chestcommands.config.ConfigManager;
 import me.filoghost.chestcommands.legacy.upgrade.UpgradeTask;
@@ -13,12 +19,6 @@ import me.filoghost.fcommons.config.ConfigErrors;
 import me.filoghost.fcommons.config.ConfigLoader;
 import me.filoghost.fcommons.config.exception.ConfigLoadException;
 import me.filoghost.fcommons.config.exception.ConfigSaveException;
-import org.apache.commons.lang.StringEscapeUtils;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.List;
 
 public class V4_0_PlaceholdersUpgradeTask extends UpgradeTask {
 
@@ -26,37 +26,34 @@ public class V4_0_PlaceholdersUpgradeTask extends UpgradeTask {
     private final ConfigLoader newPlaceholdersConfigLoader;
     private Config updatedConfig;
 
-    public V4_0_PlaceholdersUpgradeTask(ConfigManager configManager) {
+    public V4_0_PlaceholdersUpgradeTask(final ConfigManager configManager) {
         this.oldPlaceholdersFile = configManager.getRootDataFolder().resolve("placeholders.yml");
         this.newPlaceholdersConfigLoader = configManager.getConfigLoader("custom-placeholders.yml");
     }
 
     @Override
-    public Path getOriginalFile() {
-        return oldPlaceholdersFile;
-    }
+    public Path getOriginalFile() { return this.oldPlaceholdersFile; }
 
     @Override
-    public Path getUpgradedFile() {
-        return newPlaceholdersConfigLoader.getFile();
-    }
+    public Path getUpgradedFile() { return this.newPlaceholdersConfigLoader.getFile(); }
 
     @Override
     public void computeChanges() throws ConfigLoadException {
-        if (!Files.isRegularFile(getOriginalFile()) || Files.isRegularFile(getUpgradedFile())) {
+        if (!Files.isRegularFile(this.getOriginalFile()) || Files.isRegularFile(this.getUpgradedFile())) {
             return;
         }
 
-        // Do NOT load the new placeholder configuration from disk, as it should only contain placeholders imported from the old file
-        Config newPlaceholdersConfig = new Config();
+        // Do NOT load the new placeholder configuration from disk, as it should only
+        // contain placeholders imported from the old file
+        final Config newPlaceholdersConfig = new Config();
         List<String> lines;
         try {
-            lines = Files.readAllLines(oldPlaceholdersFile);
-        } catch (IOException e) {
+            lines = Files.readAllLines(this.oldPlaceholdersFile);
+        } catch (final IOException e) {
             throw new ConfigLoadException(ConfigErrors.readIOException, e);
         }
 
-        for (String line : lines) {
+        for (final String line : lines) {
             // Comment or empty line
             if (line.isEmpty() || line.startsWith("#")) {
                 continue;
@@ -67,12 +64,12 @@ public class V4_0_PlaceholdersUpgradeTask extends UpgradeTask {
                 continue;
             }
 
-            String[] parts = Strings.splitAndTrim(line, ":", 2);
-            String placeholder = unquote(parts[0]);
-            String replacement = StringEscapeUtils.unescapeJava(unquote(parts[1]));
+            final String[] parts = Strings.splitAndTrim(line, ":", 2);
+            final String placeholder = V4_0_PlaceholdersUpgradeTask.unquote(parts[0]);
+            final String replacement = StringEscapeUtils.unescapeJava(V4_0_PlaceholdersUpgradeTask.unquote(parts[1]));
 
             newPlaceholdersConfig.setString("placeholders." + placeholder, replacement);
-            setSaveRequired();
+            this.setSaveRequired();
         }
 
         this.updatedConfig = newPlaceholdersConfig;
@@ -81,12 +78,13 @@ public class V4_0_PlaceholdersUpgradeTask extends UpgradeTask {
     @Override
     public void saveChanges() throws ConfigSaveException {
         try {
-            Files.deleteIfExists(oldPlaceholdersFile);
-        } catch (IOException ignored) {}
-        newPlaceholdersConfigLoader.save(updatedConfig);
+            Files.deleteIfExists(this.oldPlaceholdersFile);
+        } catch (final IOException ignored) {
+        }
+        this.newPlaceholdersConfigLoader.save(this.updatedConfig);
     }
 
-    private static String unquote(String input) {
+    private static String unquote(final String input) {
         if (input.length() < 2) {
             // Too short, cannot be a quoted string
             return input;

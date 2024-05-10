@@ -1,18 +1,18 @@
 /*
- * Copyright (C) filoghost and contributors
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) filoghost and contributors SPDX-License-Identifier:
+ * GPL-3.0-or-later
  */
 package me.filoghost.chestcommands.parsing;
+
+import org.bukkit.Color;
+import org.bukkit.DyeColor;
+import org.bukkit.block.banner.Pattern;
+import org.bukkit.block.banner.PatternType;
 
 import me.filoghost.chestcommands.logging.Errors;
 import me.filoghost.fcommons.Strings;
 import me.filoghost.fcommons.collection.EnumLookupRegistry;
 import me.filoghost.fcommons.collection.LookupRegistry;
-import org.bukkit.Color;
-import org.bukkit.DyeColor;
-import org.bukkit.block.banner.Pattern;
-import org.bukkit.block.banner.PatternType;
 
 public final class ItemMetaParser {
 
@@ -21,27 +21,26 @@ public final class ItemMetaParser {
 
     private ItemMetaParser() {}
 
-
-    public static Color parseRGBColor(String input) throws ParseException {
-        String[] split = Strings.splitAndTrim(input, ",");
+    public static Color parseRGBColor(final String input) throws ParseException {
+        final String[] split = Strings.splitAndTrim(input, ",");
 
         if (split.length != 3) {
             throw new ParseException(Errors.Parsing.invalidColorFormat);
         }
 
-        int red = parseColor(split[0], "red");
-        int green = parseColor(split[1], "green");
-        int blue = parseColor(split[2], "blue");
+        final int red = ItemMetaParser.parseColor(split[0], "red");
+        final int green = ItemMetaParser.parseColor(split[1], "green");
+        final int blue = ItemMetaParser.parseColor(split[2], "blue");
 
         return Color.fromRGB(red, green, blue);
     }
 
-    private static int parseColor(String valueString, String colorName) throws ParseException {
+    private static int parseColor(final String valueString, final String colorName) throws ParseException {
         int value;
 
         try {
             value = NumberParser.getInteger(valueString);
-        } catch (ParseException e) {
+        } catch (final ParseException e) {
             throw new ParseException(Errors.Parsing.invalidColorNumber(valueString, colorName), e);
         }
 
@@ -52,25 +51,25 @@ public final class ItemMetaParser {
         return value;
     }
 
-    public static DyeColor parseDyeColor(String input) throws ParseException {
-        DyeColor dyeColor = DYE_COLORS_REGISTRY.lookup(input);
+    public static DyeColor parseDyeColor(final String input) throws ParseException {
+        final DyeColor dyeColor = ItemMetaParser.DYE_COLORS_REGISTRY.lookup(input);
         if (dyeColor == null) {
             throw new ParseException(Errors.Parsing.unknownDyeColor(input));
         }
         return dyeColor;
     }
 
-    public static Pattern parseBannerPattern(String input) throws ParseException {
-        String[] split = Strings.splitAndTrim(input, ":");
+    public static Pattern parseBannerPattern(final String input) throws ParseException {
+        final String[] split = Strings.splitAndTrim(input, ":");
         if (split.length != 2) {
             throw new ParseException(Errors.Parsing.invalidPatternFormat);
         }
 
-        PatternType patternType = PATTERN_TYPES_REGISTRY.lookup(split[0]);
+        final PatternType patternType = ItemMetaParser.PATTERN_TYPES_REGISTRY.lookup(split[0]);
         if (patternType == null) {
             throw new ParseException(Errors.Parsing.unknownPatternType(split[0]));
         }
-        DyeColor patternColor = parseDyeColor(split[1]);
+        final DyeColor patternColor = ItemMetaParser.parseDyeColor(split[1]);
 
         return new Pattern(patternColor, patternType);
     }

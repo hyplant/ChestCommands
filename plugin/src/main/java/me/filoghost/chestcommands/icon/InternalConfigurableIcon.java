@@ -1,7 +1,6 @@
 /*
- * Copyright (C) filoghost and contributors
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) filoghost and contributors SPDX-License-Identifier:
+ * GPL-3.0-or-later
  */
 package me.filoghost.chestcommands.icon;
 
@@ -39,33 +38,25 @@ public class InternalConfigurableIcon extends BaseConfigurableIcon implements Re
     private ImmutableList<Action> clickActions;
     private ClickResult clickResult;
 
-    public InternalConfigurableIcon(Material material) {
+    public InternalConfigurableIcon(final Material material) {
         super(material);
-        setPlaceholdersEnabled(true);
+        this.setPlaceholdersEnabled(true);
         this.clickResult = ClickResult.CLOSE;
     }
 
-    public boolean canViewIcon(Player player) {
-        return IconPermission.hasPermission(player, viewPermission);
-    }
-    
-    public boolean hasViewPermission() {
-        return viewPermission != null && !viewPermission.isEmpty();
-    }
+    public boolean canViewIcon(final Player player) { return IconPermission.hasPermission(player, this.viewPermission); }
 
-    public void setClickPermission(String permission) {
-        this.clickPermission = new IconPermission(permission);
-    }
-    
-    public void setNoClickPermissionMessage(String noClickPermissionMessage) {
+    public boolean hasViewPermission() { return this.viewPermission != null && !this.viewPermission.isEmpty(); }
+
+    public void setClickPermission(final String permission) { this.clickPermission = new IconPermission(permission); }
+
+    public void setNoClickPermissionMessage(final String noClickPermissionMessage) {
         this.noClickPermissionMessage = noClickPermissionMessage;
     }
-        
-    public void setViewPermission(String viewPermission) {
-        this.viewPermission = new IconPermission(viewPermission);
-    }
 
-    public void setRequiredMoney(double requiredMoney) {
+    public void setViewPermission(final String viewPermission) { this.viewPermission = new IconPermission(viewPermission); }
+
+    public void setRequiredMoney(final double requiredMoney) {
         if (requiredMoney > 0.0) {
             this.requiredMoney = new RequiredMoney(requiredMoney);
         } else {
@@ -73,7 +64,7 @@ public class InternalConfigurableIcon extends BaseConfigurableIcon implements Re
         }
     }
 
-    public void setRequiredExpLevel(int requiredLevels) {
+    public void setRequiredExpLevel(final int requiredLevels) {
         if (requiredLevels > 0) {
             this.requiredExpLevel = new RequiredExpLevel(requiredLevels);
         } else {
@@ -81,7 +72,7 @@ public class InternalConfigurableIcon extends BaseConfigurableIcon implements Re
         }
     }
 
-    public void setRequiredItems(List<RequiredItem> requiredItems) {
+    public void setRequiredItems(final List<RequiredItem> requiredItems) {
         if (requiredItems != null) {
             this.requiredItems = new RequiredItems(requiredItems);
         } else {
@@ -89,14 +80,11 @@ public class InternalConfigurableIcon extends BaseConfigurableIcon implements Re
         }
     }
 
-    public void setClickActions(List<Action> clickActions) {
-        this.clickActions = CollectionUtils.newImmutableList(clickActions);
-    }
-    
-    
+    public void setClickActions(final List<Action> clickActions) { this.clickActions = CollectionUtils.newImmutableList(clickActions); }
+
     @Override
-    public ItemStack render(@NotNull Player viewer) {
-        if (canViewIcon(viewer)) {
+    public ItemStack render(@NotNull final Player viewer) {
+        if (this.canViewIcon(viewer)) {
             return super.render(viewer);
         } else {
             return null;
@@ -104,55 +92,52 @@ public class InternalConfigurableIcon extends BaseConfigurableIcon implements Re
     }
 
     @Override
-    protected boolean shouldCacheRendering() {
-        return super.shouldCacheRendering() && !hasViewPermission();
-    }
+    protected boolean shouldCacheRendering() { return super.shouldCacheRendering() && !this.hasViewPermission(); }
 
-
-    public void setClickResult(ClickResult clickResult) {
+    public void setClickResult(final ClickResult clickResult) {
         Preconditions.notNull(clickResult, "clickResult");
         this.clickResult = clickResult;
     }
 
     @Override
-    public void onClick(@NotNull MenuView menuView, @NotNull Player player) {
-        ClickResult clickResult = onClickGetResult(menuView, player);
+    public void onClick(@NotNull final MenuView menuView, @NotNull final Player player) {
+        final ClickResult clickResult = this.onClickGetResult(menuView, player);
         if (clickResult == ClickResult.CLOSE) {
             menuView.close();
         }
     }
 
-    private ClickResult onClickGetResult(@NotNull MenuView menuView, @NotNull Player player) {
-        if (!IconPermission.hasPermission(player, viewPermission)) {
+    private ClickResult onClickGetResult(@NotNull final MenuView menuView, @NotNull final Player player) {
+        if (!IconPermission.hasPermission(player, this.viewPermission)) {
             return ClickResult.KEEP_OPEN;
         }
 
-        if (!IconPermission.hasPermission(player, clickPermission)) {
-            if (noClickPermissionMessage != null) {
-                player.sendMessage(noClickPermissionMessage);
+        if (!IconPermission.hasPermission(player, this.clickPermission)) {
+            if (this.noClickPermissionMessage != null) {
+                player.sendMessage(this.noClickPermissionMessage);
             } else {
                 player.sendMessage(Lang.get().default_no_icon_permission);
             }
-            return clickResult;
+            return this.clickResult;
         }
 
         // Check all the requirements
-        Requirement[] requirements = {requiredMoney, requiredExpLevel, requiredItems};
-        boolean hasAllRequirements = Requirement.hasAllCosts(player, requirements);
+        final Requirement[] requirements = { this.requiredMoney, this.requiredExpLevel, this.requiredItems };
+        final boolean hasAllRequirements = Requirement.hasAllCosts(player, requirements);
         if (!hasAllRequirements) {
-            return clickResult;
+            return this.clickResult;
         }
 
         // If all requirements are satisfied, take their cost
-        boolean takenAllCosts = Requirement.takeAllCosts(player, requirements);
+        final boolean takenAllCosts = Requirement.takeAllCosts(player, requirements);
         if (!takenAllCosts) {
-            return clickResult;
+            return this.clickResult;
         }
 
         boolean hasOpenMenuAction = false;
 
-        if (clickActions != null) {
-            for (Action action : clickActions) {
+        if (this.clickActions != null) {
+            for (final Action action : this.clickActions) {
                 action.execute(player);
 
                 if (action instanceof OpenMenuAction) {
@@ -168,30 +153,32 @@ public class InternalConfigurableIcon extends BaseConfigurableIcon implements Re
         if (hasOpenMenuAction) {
             return ClickResult.KEEP_OPEN;
         } else {
-            return clickResult;
+            return this.clickResult;
         }
     }
 
     @Override
-    public @Nullable ItemStack updateRendering(Player viewer, @Nullable ItemStack currentRendering) {
-        if (currentRendering != null && shouldCacheRendering()) {
-            // Internal icons do not change, no need to update if the item is already rendered
+    public @Nullable ItemStack updateRendering(final Player viewer, @Nullable final ItemStack currentRendering) {
+        if (currentRendering != null && this.shouldCacheRendering()) {
+            // Internal icons do not change, no need to update if the item is already
+            // rendered
             return currentRendering;
         }
 
-        if (!canViewIcon(viewer)) {
+        if (!this.canViewIcon(viewer)) {
             // Hide the current item
             return null;
         }
 
         if (currentRendering == null) {
             // Render item normally
-            return render(viewer);
+            return this.render(viewer);
         } else {
-            // Internal icons are loaded and then never change, we can safely update only name and lore (for performance)
-            ItemMeta meta = currentRendering.getItemMeta();
-            meta.setDisplayName(renderName(viewer));
-            meta.setLore(renderLore(viewer));
+            // Internal icons are loaded and then never change, we can safely update only
+            // name and lore (for performance)
+            final ItemMeta meta = currentRendering.getItemMeta();
+            meta.setDisplayName(this.renderName(viewer));
+            meta.setLore(this.renderLore(viewer));
             currentRendering.setItemMeta(meta);
             return currentRendering;
         }

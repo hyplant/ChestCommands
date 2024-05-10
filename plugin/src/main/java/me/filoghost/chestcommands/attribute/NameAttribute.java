@@ -1,7 +1,6 @@
 /*
- * Copyright (C) filoghost and contributors
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) filoghost and contributors SPDX-License-Identifier:
+ * GPL-3.0-or-later
  */
 package me.filoghost.chestcommands.attribute;
 
@@ -13,11 +12,9 @@ public class NameAttribute implements IconAttribute {
 
     private final String name;
 
-    public NameAttribute(String name, AttributeErrorHandler errorHandler) {
-        this.name = colorName(name);
-    }
+    public NameAttribute(final String name, final AttributeErrorHandler errorHandler) { this.name = this.colorName(name); }
 
-    private String colorName(String name) {
+    private String colorName(final String name) {
         if (!name.isEmpty()) {
             return Settings.get().default_color__name + Colors.addColors(name);
         } else {
@@ -26,8 +23,6 @@ public class NameAttribute implements IconAttribute {
     }
 
     @Override
-    public void apply(InternalConfigurableIcon icon) {
-        icon.setName(name);
-    }
+    public void apply(final InternalConfigurableIcon icon) { icon.setName(this.name); }
 
 }

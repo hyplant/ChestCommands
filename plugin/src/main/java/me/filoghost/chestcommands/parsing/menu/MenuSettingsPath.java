@@ -1,14 +1,13 @@
 /*
- * Copyright (C) filoghost and contributors
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) filoghost and contributors SPDX-License-Identifier:
+ * GPL-3.0-or-later
  */
 package me.filoghost.chestcommands.parsing.menu;
 
 import me.filoghost.fcommons.config.ConfigPath;
 
 public class MenuSettingsPath {
-    
+
     public static final ConfigPath ROOT_SECTION = ConfigPath.literal("menu-settings");
 
     public static final ConfigPath NAME = ConfigPath.literal("name");

@@ -1,7 +1,6 @@
 /*
- * Copyright (C) filoghost and contributors
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) filoghost and contributors SPDX-License-Identifier:
+ * GPL-3.0-or-later
  */
 package me.filoghost.chestcommands.icon.requirement.item;
 
@@ -21,32 +20,31 @@ public class InventoryTakeHelper {
 
     private boolean success;
 
-    public InventoryTakeHelper(PlayerInventory inventory) {
+    public InventoryTakeHelper(final PlayerInventory inventory) {
         this.inventory = inventory;
         this.remainingItems = new ArrayList<>();
 
         for (int slotIndex = 0; slotIndex < inventory.getSize(); slotIndex++) {
-            ItemStack item = inventory.getItem(slotIndex);
+            final ItemStack item = inventory.getItem(slotIndex);
             if (item != null && !MaterialsHelper.isAir(item.getType())) {
-                remainingItems.add(new RemainingItem(slotIndex, item));
+                this.remainingItems.add(new RemainingItem(slotIndex, item));
             }
         }
     }
 
-    public boolean prepareTakeItems(List<RequiredItem> requiredItems) {
-        List<RequiredItem> missingItems = new ArrayList<>();
+    public boolean prepareTakeItems(final List<RequiredItem> requiredItems) {
+        final List<RequiredItem> missingItems = new ArrayList<>();
 
         // Sort required items: check required items with a restrictive durability first
-        List<RequiredItem> sortedRequiredItems = requiredItems.stream()
-                .sorted(Comparator.comparing(RequiredItem::hasRestrictiveDurability).reversed())
-                .collect(Collectors.toList());
+        final List<RequiredItem> sortedRequiredItems = requiredItems.stream()
+                .sorted(Comparator.comparing(RequiredItem::hasRestrictiveDurability).reversed()).collect(Collectors.toList());
 
-        for (RequiredItem requiredItem : sortedRequiredItems) {
+        for (final RequiredItem requiredItem : sortedRequiredItems) {
             int remainingRequiredAmount = requiredItem.getAmount();
 
-            for (RemainingItem remainingItem : remainingItems) {
+            for (final RemainingItem remainingItem : this.remainingItems) {
                 if (remainingItem.getAmount() > 0 && requiredItem.isMatchingType(remainingItem)) {
-                    int takenAmount = remainingItem.subtract(remainingRequiredAmount);
+                    final int takenAmount = remainingItem.subtract(remainingRequiredAmount);
                     remainingRequiredAmount -= takenAmount;
                     if (remainingRequiredAmount == 0) {
                         break;
@@ -60,21 +58,21 @@ public class InventoryTakeHelper {
             }
         }
 
-        success = missingItems.isEmpty();
-        return success;
+        this.success = missingItems.isEmpty();
+        return this.success;
     }
 
     public void applyTakeItems() {
-        Preconditions.checkState(success, "items take preparation was not run or successful");
+        Preconditions.checkState(this.success, "items take preparation was not run or successful");
 
-        for (RemainingItem remainingItem : remainingItems) {
-            int slotIndex = remainingItem.getSlotIndex();
-            ItemStack inventoryItem = inventory.getItem(slotIndex);
+        for (final RemainingItem remainingItem : this.remainingItems) {
+            final int slotIndex = remainingItem.getSlotIndex();
+            final ItemStack inventoryItem = this.inventory.getItem(slotIndex);
             if (remainingItem.getAmount() != inventoryItem.getAmount()) {
                 if (remainingItem.getAmount() > 0) {
                     inventoryItem.setAmount(remainingItem.getAmount());
                 } else {
-                    inventory.setItem(slotIndex, null);
+                    this.inventory.setItem(slotIndex, null);
                 }
             }
         }

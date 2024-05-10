@@ -1,7 +1,5 @@
 /*
- * Copyright (C) Jan Schultke
- *
- * SPDX-License-Identifier: MIT
+ * Copyright (C) Jan Schultke SPDX-License-Identifier: MIT
  */
 package me.filoghost.chestcommands.util.nbt;
 
@@ -12,52 +10,32 @@ public final class NBTDouble extends NBTTag implements Cloneable {
 
     private double value;
 
-    public NBTDouble(double value) {
-        this.value = value;
-    }
+    public NBTDouble(final double value) { this.value = value; }
 
     @Override
-    public Double getValue() {
-        return value;
-    }
+    public Double getValue() { return this.value; }
 
-    public double getDoubleValue() {
-        return value;
-    }
+    public double getDoubleValue() { return this.value; }
 
-    public void setDoubleValue(double value) {
-        this.value = value;
-    }
+    public void setDoubleValue(final double value) { this.value = value; }
 
     @Override
-    public NBTType getType() {
-        return NBTType.DOUBLE;
-    }
+    public NBTType getType() { return NBTType.DOUBLE; }
 
     // MISC
 
     @Override
-    public boolean equals(Object obj) {
-        return obj instanceof NBTDouble && equals((NBTDouble) obj);
-    }
+    public boolean equals(final Object obj) { return obj instanceof NBTDouble && this.equals((NBTDouble) obj); }
 
-    public boolean equals(NBTDouble tag) {
-        return this.value == tag.value;
-    }
+    public boolean equals(final NBTDouble tag) { return this.value == tag.value; }
 
     @Override
-    public int hashCode() {
-        return Double.hashCode(value);
-    }
+    public int hashCode() { return Double.hashCode(this.value); }
 
     @Override
-    public String toMSONString() {
-        return value + "d";
-    }
+    public String toMSONString() { return this.value + "d"; }
 
     @Override
-    public NBTDouble clone() {
-        return new NBTDouble(value);
-    }
+    public NBTDouble clone() { return new NBTDouble(this.value); }
 
 }

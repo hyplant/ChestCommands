@@ -1,12 +1,12 @@
 /*
- * Copyright (C) filoghost and contributors
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) filoghost and contributors SPDX-License-Identifier:
+ * GPL-3.0-or-later
  */
 package me.filoghost.chestcommands.icon.requirement.item;
 
-import me.filoghost.fcommons.Preconditions;
 import org.bukkit.Material;
+
+import me.filoghost.fcommons.Preconditions;
 
 public class RequiredItem {
 
@@ -15,46 +15,38 @@ public class RequiredItem {
     private short durability;
     private boolean isDurabilityRestrictive = false;
 
-    public RequiredItem(Material material, int amount) {
+    public RequiredItem(final Material material, final int amount) {
         Preconditions.checkArgumentNotAir(material, "material");
 
         this.material = material;
         this.amount = amount;
     }
 
-    public Material getMaterial() {
-        return material;
-    }
+    public Material getMaterial() { return this.material; }
 
-    public int getAmount() {
-        return amount;
-    }
+    public int getAmount() { return this.amount; }
 
-    public short getDurability() {
-        return durability;
-    }
+    public short getDurability() { return this.durability; }
 
-    public void setRestrictiveDurability(short durability) {
+    public void setRestrictiveDurability(final short durability) {
         Preconditions.checkArgument(durability >= 0, "durability must be 0 or greater");
 
         this.durability = durability;
-        isDurabilityRestrictive = true;
+        this.isDurabilityRestrictive = true;
     }
 
-    public boolean hasRestrictiveDurability() {
-        return isDurabilityRestrictive;
+    public boolean hasRestrictiveDurability() { return this.isDurabilityRestrictive; }
+
+    public boolean isMatchingType(final RemainingItem item) {
+        return item != null && item.getMaterial() == this.material && this.isMatchingDurability(item.getDurability());
     }
 
-    public boolean isMatchingType(RemainingItem item) {
-        return item != null && item.getMaterial() == material && isMatchingDurability(item.getDurability());
-    }
-    
-    private boolean isMatchingDurability(short durability) {
-        if (isDurabilityRestrictive) {
-            return this.durability == durability;
+    private boolean isMatchingDurability(final int i) {
+        if (this.isDurabilityRestrictive) {
+            return this.durability == i;
         } else {
             return true;
         }
     }
-    
+
 }

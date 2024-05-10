@@ -6,10 +6,10 @@ api-version: 1.13
 softdepend: [Vault, BarAPI, PlaceholderAPI]
 
 commands:
-   chestcommands:
-      description: Main command for ChestCommands.
-      usage: /<command> (Startup error)
-      aliases: [cc]
+  chestcommands:
+    description: Main command for ChestCommands.
+    usage: /<command> (Startup error)
+    aliases: [cc]
 
 permissions:
   chestcommands.economy.bypass:

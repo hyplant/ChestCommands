@@ -1,15 +1,15 @@
 /*
- * Copyright (C) filoghost and contributors
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) filoghost and contributors SPDX-License-Identifier:
+ * GPL-3.0-or-later
  */
 package me.filoghost.chestcommands.parsing.menu;
 
+import java.util.List;
+
 import com.google.common.collect.ImmutableList;
+
 import me.filoghost.chestcommands.action.Action;
 import me.filoghost.fcommons.collection.CollectionUtils;
-
-import java.util.List;
 
 public class MenuSettings {
 
@@ -24,49 +24,29 @@ public class MenuSettings {
 
     private MenuOpenItem openItem;
 
-    public MenuSettings(String title, int rows) {
+    public MenuSettings(final String title, final int rows) {
         this.title = title;
         this.rows = rows;
     }
 
-    public String getTitle() {
-        return title;
-    }
+    public String getTitle() { return this.title; }
 
-    public int getRows() {
-        return rows;
-    }
+    public int getRows() { return this.rows; }
 
-    public void setCommands(List<String> commands) {
-        this.commands = CollectionUtils.newImmutableList(commands);
-    }
+    public void setCommands(final List<String> commands) { this.commands = CollectionUtils.newImmutableList(commands); }
 
-    public ImmutableList<String> getCommands() {
-        return commands;
-    }
+    public ImmutableList<String> getCommands() { return this.commands; }
 
-    public ImmutableList<Action> getOpenActions() {
-        return openActions;
-    }
+    public ImmutableList<Action> getOpenActions() { return this.openActions; }
 
-    public void setOpenActions(List<Action> openAction) {
-        this.openActions = CollectionUtils.newImmutableList(openAction);
-    }
+    public void setOpenActions(final List<Action> openAction) { this.openActions = CollectionUtils.newImmutableList(openAction); }
 
-    public int getRefreshTicks() {
-        return refreshTicks;
-    }
+    public int getRefreshTicks() { return this.refreshTicks; }
 
-    public void setRefreshTicks(int refreshTicks) {
-        this.refreshTicks = refreshTicks;
-    }
+    public void setRefreshTicks(final int refreshTicks) { this.refreshTicks = refreshTicks; }
 
-    public MenuOpenItem getOpenItem() {
-        return openItem;
-    }
+    public MenuOpenItem getOpenItem() { return this.openItem; }
 
-    public void setOpenItem(MenuOpenItem openItem) {
-        this.openItem = openItem;
-    }
+    public void setOpenItem(final MenuOpenItem openItem) { this.openItem = openItem; }
 
 }

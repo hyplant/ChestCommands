@@ -1,7 +1,6 @@
 /*
- * Copyright (C) filoghost and contributors
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) filoghost and contributors SPDX-License-Identifier:
+ * GPL-3.0-or-later
  */
 package me.filoghost.chestcommands.legacy;
 
@@ -35,48 +34,45 @@ public class UpgradeList {
      */
     private static final ImmutableList<Upgrade> orderedUpgrades = ImmutableList.of(
             // Edit the raw text first
-            multiTaskUpgrade("v4.0-menus-rename", (configManager) -> {
-                return createMenuTasks(configManager, V4_0_MenuRawTextFileUpgradeTask::new);
-            }),
+            UpgradeList.multiTaskUpgrade("v4.0-menus-rename",
+                    configManager -> UpgradeList.createMenuTasks(configManager, V4_0_MenuRawTextFileUpgradeTask::new)),
 
             // Manipulate the configuration after editing the raw text
-            multiTaskUpgrade("v4.0-menus-reformat", (configManager) -> {
-                String legacyCommandSeparator = readLegacyCommandSeparator(configManager);
-                return createMenuTasks(configManager,
+            UpgradeList.multiTaskUpgrade("v4.0-menus-reformat", configManager -> {
+                final String legacyCommandSeparator = UpgradeList.readLegacyCommandSeparator(configManager);
+                return UpgradeList.createMenuTasks(configManager,
                         file -> new V4_0_MenuConfigUpgradeTask(configManager, file, legacyCommandSeparator));
             }),
 
             // Upgrade config after reading the command separator for menus
-            singleTaskUpgrade("v4.0-config", V4_0_SettingsUpgradeTask::new),
-            singleTaskUpgrade("v4.0-placeholders", V4_0_PlaceholdersUpgradeTask::new),
-            singleTaskUpgrade("v4.0-lang", V4_0_LangUpgradeTask::new)
-    );
+            UpgradeList.singleTaskUpgrade("v4.0-config", V4_0_SettingsUpgradeTask::new),
+            UpgradeList.singleTaskUpgrade("v4.0-placeholders", V4_0_PlaceholdersUpgradeTask::new),
+            UpgradeList.singleTaskUpgrade("v4.0-lang", V4_0_LangUpgradeTask::new));
 
-    private static Upgrade singleTaskUpgrade(String id, Upgrade.SingleTaskSupplier upgradeTaskSupplier) {
-        return new Upgrade(id, configManager -> {
-            return Collections.singletonList(upgradeTaskSupplier.getTask(configManager));
-        });
+    private static Upgrade singleTaskUpgrade(final String id, final Upgrade.SingleTaskSupplier upgradeTaskSupplier) {
+        return new Upgrade(id, configManager -> Collections.singletonList(upgradeTaskSupplier.getTask(configManager)));
     }
 
-    private static Upgrade multiTaskUpgrade(String id, Upgrade.MultiTaskSupplier upgradeTasksSupplier) {
+    private static Upgrade multiTaskUpgrade(final String id, final Upgrade.MultiTaskSupplier upgradeTasksSupplier) {
         return new Upgrade(id, upgradeTasksSupplier);
     }
 
-    private static List<UpgradeTask> createMenuTasks(ConfigManager configManager, Function<Path, UpgradeTask> menuTaskSupplier) throws UpgradeTaskException {
-        List<Path> menuFiles = getMenuFiles(configManager);
+    private static List<UpgradeTask> createMenuTasks(final ConfigManager configManager, final Function<Path, UpgradeTask> menuTaskSupplier)
+            throws UpgradeTaskException {
+        final List<Path> menuFiles = UpgradeList.getMenuFiles(configManager);
         return CollectionUtils.toArrayList(menuFiles, menuTaskSupplier);
     }
 
-    private static List<Path> getMenuFiles(ConfigManager configManager) throws UpgradeTaskException {
+    private static List<Path> getMenuFiles(final ConfigManager configManager) throws UpgradeTaskException {
         try {
             return configManager.getMenuFiles();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new UpgradeTaskException(Errors.Upgrade.menuListIOException, e);
         }
     }
 
-    private static @Nullable String readLegacyCommandSeparator(ConfigManager configManager) {
-        ConfigLoader settingsConfigLoader = configManager.getConfigLoader("config.yml");
+    private static @Nullable String readLegacyCommandSeparator(final ConfigManager configManager) {
+        final ConfigLoader settingsConfigLoader = configManager.getConfigLoader("config.yml");
 
         if (!settingsConfigLoader.fileExists()) {
             return null;
@@ -84,13 +80,11 @@ public class UpgradeList {
 
         try {
             return settingsConfigLoader.load().getString("multiple-commands-separator");
-        } catch (ConfigException e) {
+        } catch (final ConfigException e) {
             Log.warning("Failed to load \"" + settingsConfigLoader.getFile() + "\", assuming default command separator \";\".");
             return null;
         }
     }
 
-    public static ImmutableList<Upgrade> getOrderedUpgrades() {
-        return orderedUpgrades;
-    }
+    public static ImmutableList<Upgrade> getOrderedUpgrades() { return UpgradeList.orderedUpgrades; }
 }

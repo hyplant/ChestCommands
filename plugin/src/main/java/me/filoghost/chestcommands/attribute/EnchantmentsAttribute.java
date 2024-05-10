@@ -1,42 +1,41 @@
 /*
- * Copyright (C) filoghost and contributors
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) filoghost and contributors SPDX-License-Identifier:
+ * GPL-3.0-or-later
  */
 package me.filoghost.chestcommands.attribute;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.bukkit.enchantments.Enchantment;
+
 import me.filoghost.chestcommands.icon.InternalConfigurableIcon;
 import me.filoghost.chestcommands.parsing.EnchantmentParser;
 import me.filoghost.chestcommands.parsing.ParseException;
-import org.bukkit.enchantments.Enchantment;
 
 public class EnchantmentsAttribute implements IconAttribute {
 
     private final Map<Enchantment, Integer> enchantments;
 
-    public EnchantmentsAttribute(List<String> serializedEnchantments, AttributeErrorHandler errorHandler) {
-        enchantments = new HashMap<>();
+    public EnchantmentsAttribute(final List<String> serializedEnchantments, final AttributeErrorHandler errorHandler) {
+        this.enchantments = new HashMap<>();
 
-        for (String serializedEnchantment : serializedEnchantments) {
+        for (final String serializedEnchantment : serializedEnchantments) {
             if (serializedEnchantment == null || serializedEnchantment.isEmpty()) {
                 continue; // Skip
             }
 
             try {
-                EnchantmentParser.EnchantmentDetails enchantment = EnchantmentParser.parseEnchantment(serializedEnchantment);
-                enchantments.put(enchantment.getEnchantment(), enchantment.getLevel());
-            } catch (ParseException e) {
+                final EnchantmentParser.EnchantmentDetails enchantment = EnchantmentParser.parseEnchantment(serializedEnchantment);
+                this.enchantments.put(enchantment.getEnchantment(), enchantment.getLevel());
+            } catch (final ParseException e) {
                 errorHandler.onListElementError(serializedEnchantment, e);
             }
         }
     }
 
     @Override
-    public void apply(InternalConfigurableIcon icon) {
-        icon.setEnchantments(enchantments);
-    }
+    public void apply(final InternalConfigurableIcon icon) { icon.setEnchantments(this.enchantments); }
 
 }

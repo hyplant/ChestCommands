@@ -1,24 +1,25 @@
 /*
- * Copyright (C) filoghost and contributors
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) filoghost and contributors SPDX-License-Identifier:
+ * GPL-3.0-or-later
  */
 package me.filoghost.chestcommands.menu;
 
+import java.nio.file.Path;
+import java.util.List;
+
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+import org.jetbrains.annotations.NotNull;
+
 import com.google.common.collect.ImmutableList;
+
 import me.filoghost.chestcommands.ChestCommands;
 import me.filoghost.chestcommands.Permissions;
 import me.filoghost.chestcommands.action.Action;
 import me.filoghost.chestcommands.api.MenuView;
 import me.filoghost.chestcommands.config.Lang;
 import me.filoghost.fcommons.collection.CollectionUtils;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
-import org.jetbrains.annotations.NotNull;
-
-import java.nio.file.Path;
-import java.util.List;
 
 public class InternalMenu extends BaseMenu {
 
@@ -28,36 +29,26 @@ public class InternalMenu extends BaseMenu {
     private ImmutableList<Action> openActions;
     private int refreshTicks;
 
-    public InternalMenu(@NotNull String title, int rows, @NotNull Path sourceFile) {
+    public InternalMenu(@NotNull final String title, final int rows, @NotNull final Path sourceFile) {
         super(title, rows);
         this.sourceFile = sourceFile;
         this.openPermission = Permissions.OPEN_MENU_PREFIX + sourceFile.getFileName();
     }
 
-    public @NotNull Path getSourceFile() {
-        return sourceFile;
-    }
+    public @NotNull Path getSourceFile() { return this.sourceFile; }
 
-    public void setOpenActions(List<Action> openAction) {
-        this.openActions = CollectionUtils.newImmutableList(openAction);
-    }
+    public void setOpenActions(final List<Action> openAction) { this.openActions = CollectionUtils.newImmutableList(openAction); }
 
-    public String getOpenPermission() {
-        return openPermission;
-    }
+    public String getOpenPermission() { return this.openPermission; }
 
-    public int getRefreshTicks() {
-        return refreshTicks;
-    }
+    public int getRefreshTicks() { return this.refreshTicks; }
 
-    public void setRefreshTicks(int refreshTicks) {
-        this.refreshTicks = refreshTicks;
-    }
+    public void setRefreshTicks(final int refreshTicks) { this.refreshTicks = refreshTicks; }
 
     @Override
-    public @NotNull MenuView open(@NotNull Player player) {
-        if (openActions != null) {
-            for (Action openAction : openActions) {
+    public @NotNull MenuView open(@NotNull final Player player) {
+        if (this.openActions != null) {
+            for (final Action openAction : this.openActions) {
                 openAction.execute(player);
             }
         }
@@ -66,20 +57,18 @@ public class InternalMenu extends BaseMenu {
     }
 
     @Override
-    public Plugin getPlugin() {
-        return ChestCommands.getInstance();
-    }
+    public Plugin getPlugin() { return ChestCommands.getInstance(); }
 
-    public void openCheckingPermission(Player player) {
-        if (player.hasPermission(openPermission)) {
-            open(player);
+    public void openCheckingPermission(final Player player) {
+        if (player.hasPermission(this.openPermission)) {
+            this.open(player);
         } else {
-            sendNoOpenPermissionMessage(player);
+            this.sendNoOpenPermissionMessage(player);
         }
     }
 
-    public void sendNoOpenPermissionMessage(CommandSender sender) {
-        String noPermMessage = Lang.get().no_open_permission;
+    public void sendNoOpenPermissionMessage(final CommandSender sender) {
+        final String noPermMessage = Lang.get().no_open_permission;
         if (noPermMessage != null && !noPermMessage.isEmpty()) {
             sender.sendMessage(noPermMessage.replace("{permission}", this.openPermission));
         }

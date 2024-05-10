@@ -1,7 +1,6 @@
 /*
- * Copyright (C) filoghost and contributors
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) filoghost and contributors SPDX-License-Identifier:
+ * GPL-3.0-or-later
  */
 package me.filoghost.chestcommands.placeholder.scanner;
 
@@ -19,80 +18,83 @@ public class PlaceholderScanner {
     private int index;
     private boolean stopExecution;
 
-    public PlaceholderScanner(String input) {
+    public PlaceholderScanner(final String input) {
         this.input = input;
         this.inputLength = input.length();
     }
 
     public boolean containsAny() {
-        AtomicBoolean placeholderFound = new AtomicBoolean(false);
+        final AtomicBoolean placeholderFound = new AtomicBoolean(false);
 
-        scan(identifier -> {
-            stopExecution = true;
+        this.scan(identifier -> {
+            this.stopExecution = true;
             placeholderFound.set(true);
         });
 
         return placeholderFound.get();
     }
 
-    public String replace(Function<PlaceholderMatch, String> replaceFunction) {
-        StringBuilder output = new StringBuilder();
+    public String replace(final Function<PlaceholderMatch, String> replaceFunction) {
+        final StringBuilder output = new StringBuilder();
 
-        scan(identifier -> {
-            String replacement = replaceFunction.apply(identifier);
+        this.scan(identifier -> {
+            final String replacement = replaceFunction.apply(identifier);
 
             if (replacement != null) {
                 // Append preceding text and replacement
-                output.append(input, lastAppendIndex, placeholderStartIndex);
+                output.append(this.input, this.lastAppendIndex, this.placeholderStartIndex);
                 output.append(replacement);
-                lastAppendIndex = index + 1; // Start next append after the closing tag
+                this.lastAppendIndex = this.index + 1; // Start next append after the closing tag
             }
 
-            // Else, if no replacement is found, ignore the placeholder replacement and proceed normally
+            // Else, if no replacement is found, ignore the placeholder replacement and
+            // proceed normally
         });
 
         // Append trailing text
-        if (lastAppendIndex < inputLength) {
-            output.append(input, lastAppendIndex, inputLength);
+        if (this.lastAppendIndex < this.inputLength) {
+            output.append(this.input, this.lastAppendIndex, this.inputLength);
         }
 
         return output.toString();
     }
 
-    private void scan(Consumer<PlaceholderMatch> matchCallback) {
-        index = 0;
-        placeholderStartIndex = 0;
-        lastAppendIndex = 0;
+    private void scan(final Consumer<PlaceholderMatch> matchCallback) {
+        this.index = 0;
+        this.placeholderStartIndex = 0;
+        this.lastAppendIndex = 0;
 
         boolean insidePlaceholder = false;
 
-        while (index < inputLength) {
-            char currentChar = input.charAt(index);
+        while (this.index < this.inputLength) {
+            final char currentChar = this.input.charAt(this.index);
 
             if (insidePlaceholder) {
                 if (currentChar == '}') {
                     // If the placeholder is "{player}" then the identifier is "player"
-                    String placeholderContent = input.substring(placeholderStartIndex + 1, index); // Skip the opening tag
+                    final String placeholderContent = this.input.substring(this.placeholderStartIndex + 1, this.index); // Skip the opening
+                                                                                                                        // tag
                     matchCallback.accept(PlaceholderMatch.parse(placeholderContent));
-                    if (stopExecution) {
+                    if (this.stopExecution) {
                         return;
                     }
 
                     insidePlaceholder = false;
-                    placeholderStartIndex = 0;
+                    this.placeholderStartIndex = 0;
 
                 } else if (currentChar == '{') {
-                    // Nested placeholder, ignore wrapping placeholder and update placeholder start index
-                    placeholderStartIndex = index;
+                    // Nested placeholder, ignore wrapping placeholder and update placeholder start
+                    // index
+                    this.placeholderStartIndex = this.index;
                 }
             } else {
                 if (currentChar == '{') {
                     insidePlaceholder = true;
-                    placeholderStartIndex = index;
+                    this.placeholderStartIndex = this.index;
                 }
             }
 
-            index++;
+            this.index++;
         }
     }
 

@@ -1,16 +1,17 @@
 /*
- * Copyright (C) filoghost and contributors
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) filoghost and contributors SPDX-License-Identifier:
+ * GPL-3.0-or-later
  */
 package me.filoghost.chestcommands.parsing;
+
+import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.Damageable;
 
 import me.filoghost.chestcommands.logging.Errors;
 import me.filoghost.fcommons.MaterialsHelper;
 import me.filoghost.fcommons.Preconditions;
 import me.filoghost.fcommons.Strings;
-import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
 
 public class ItemStackParser {
 
@@ -22,17 +23,17 @@ public class ItemStackParser {
     /*
      * Reads item in the format "material:durability, amount".
      */
-    public ItemStackParser(String input, boolean parseAmount) throws ParseException {
+    public ItemStackParser(String input, final boolean parseAmount) throws ParseException {
         Preconditions.notNull(input, "input");
 
         if (parseAmount) {
             // Read the optional amount
-            String[] splitAmount = Strings.splitAndTrim(input, ",", 2);
+            final String[] splitAmount = Strings.splitAndTrim(input, ",", 2);
 
             if (splitAmount.length > 1) {
                 try {
                     this.amount = NumberParser.getStrictlyPositiveInteger(splitAmount[1]);
-                } catch (ParseException e) {
+                } catch (final ParseException e) {
                     throw new ParseException(Errors.Parsing.invalidAmount(splitAmount[1]), e);
                 }
 
@@ -41,14 +42,13 @@ public class ItemStackParser {
             }
         }
 
-
         // Read the optional durability
-        String[] splitByColons = Strings.splitAndTrim(input, ":", 2);
+        final String[] splitByColons = Strings.splitAndTrim(input, ":", 2);
 
         if (splitByColons.length > 1) {
             try {
                 this.durability = NumberParser.getPositiveShort(splitByColons[1]);
-            } catch (ParseException e) {
+            } catch (final ParseException e) {
                 throw new ParseException(Errors.Parsing.invalidDurability(splitByColons[1]), e);
             }
 
@@ -62,29 +62,24 @@ public class ItemStackParser {
     }
 
     public void checkNotAir() throws ParseException {
-        if (MaterialsHelper.isAir(material)) {
+        if (MaterialsHelper.isAir(this.material)) {
             throw new ParseException(Errors.Parsing.materialCannotBeAir);
         }
     }
 
-    public Material getMaterial() {
-        return material;
-    }
+    public Material getMaterial() { return this.material; }
 
-    public int getAmount() {
-        return amount;
-    }
+    public int getAmount() { return this.amount; }
 
-    public short getDurability() {
-        return durability;
-    }
+    public short getDurability() { return this.durability; }
 
-    public boolean hasExplicitDurability() {
-        return hasExplicitDurability;
-    }
+    public boolean hasExplicitDurability() { return this.hasExplicitDurability; }
 
     public ItemStack createStack() {
-        return new ItemStack(material, amount, durability);
+        final ItemStack item = new ItemStack(this.material, this.amount);
+        if (item.getItemMeta() instanceof Damageable)
+            ((Damageable) item.getItemMeta()).setDamage(this.durability);
+        return item;
     }
 
 }

@@ -1,7 +1,5 @@
 /*
- * Copyright (C) Jan Schultke
- *
- * SPDX-License-Identifier: MIT
+ * Copyright (C) Jan Schultke SPDX-License-Identifier: MIT
  */
 package me.filoghost.chestcommands.util.nbt;
 
@@ -20,14 +18,12 @@ public final class NBTIntArray extends NBTTag implements Cloneable {
      *
      * @param value the value of the tag
      */
-    public NBTIntArray(int[] value) {
-        this.value = Objects.requireNonNull(value);
-    }
+    public NBTIntArray(final int[] value) { this.value = Objects.requireNonNull(value); }
 
-    public NBTIntArray(Number[] numbers) {
+    public NBTIntArray(final Number[] numbers) {
         this.value = new int[numbers.length];
         for (int i = 0; i < numbers.length; i++) {
-            value[i] = numbers[i].intValue();
+            this.value[i] = numbers[i].intValue();
         }
     }
 
@@ -36,34 +32,24 @@ public final class NBTIntArray extends NBTTag implements Cloneable {
      *
      * @return the length of this array
      */
-    public int length() {
-        return value.length;
-    }
+    public int length() { return this.value.length; }
 
     @Override
-    public int[] getValue() {
-        return value;
-    }
+    public int[] getValue() { return this.value; }
 
     @Override
-    public NBTType getType() {
-        return NBTType.INT_ARRAY;
-    }
+    public NBTType getType() { return NBTType.INT_ARRAY; }
 
     // MISC
 
     @Override
-    public boolean equals(Object obj) {
-        return obj instanceof NBTIntArray && equals((NBTIntArray) obj);
-    }
+    public boolean equals(final Object obj) { return obj instanceof NBTIntArray && this.equals((NBTIntArray) obj); }
 
-    public boolean equals(NBTIntArray tag) {
-        return Arrays.equals(this.value, tag.value);
-    }
+    public boolean equals(final NBTIntArray tag) { return Arrays.equals(this.value, tag.value); }
 
     @Override
     public String toMSONString() {
-        StringBuilder stringbuilder = new StringBuilder("[I;");
+        final StringBuilder stringbuilder = new StringBuilder("[I;");
         for (int i = 0; i < this.value.length; i++) {
             if (i != 0) {
                 stringbuilder.append(',');
@@ -74,8 +60,6 @@ public final class NBTIntArray extends NBTTag implements Cloneable {
     }
 
     @Override
-    public NBTIntArray clone() {
-        return new NBTIntArray(value);
-    }
+    public NBTIntArray clone() { return new NBTIntArray(this.value); }
 
 }

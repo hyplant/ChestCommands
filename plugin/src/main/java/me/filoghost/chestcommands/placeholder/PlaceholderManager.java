@@ -1,7 +1,6 @@
 /*
- * Copyright (C) filoghost and contributors
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) filoghost and contributors SPDX-License-Identifier:
+ * GPL-3.0-or-later
  */
 package me.filoghost.chestcommands.placeholder;
 
@@ -24,21 +23,22 @@ public class PlaceholderManager {
     private static final PlaceholderRegistry dynamicPlaceholderRegistry = new PlaceholderRegistry();
     private static final PlaceholderCache placeholderCache = new PlaceholderCache();
     static {
-        for (DefaultPlaceholder placeholder : DefaultPlaceholder.values()) {
-            dynamicPlaceholderRegistry.registerInternalPlaceholder(placeholder.getIdentifier(), placeholder.getReplacer());
+        for (final DefaultPlaceholder placeholder : DefaultPlaceholder.values()) {
+            PlaceholderManager.dynamicPlaceholderRegistry.registerInternalPlaceholder(placeholder.getIdentifier(),
+                    placeholder.getReplacer());
         }
     }
 
-    public static boolean hasDynamicPlaceholders(List<String> list) {
-        for (String element : list) {
-            if (hasDynamicPlaceholders(element)) {
+    public static boolean hasDynamicPlaceholders(final List<String> list) {
+        for (final String element : list) {
+            if (PlaceholderManager.hasDynamicPlaceholders(element)) {
                 return true;
             }
         }
         return false;
     }
 
-    public static boolean hasDynamicPlaceholders(String text) {
+    public static boolean hasDynamicPlaceholders(final String text) {
         if (new PlaceholderScanner(text).containsAny()) {
             return true;
         }
@@ -50,8 +50,8 @@ public class PlaceholderManager {
         return false;
     }
 
-    public static String replaceDynamicPlaceholders(String text, Player player) {
-        text = new PlaceholderScanner(text).replace(match -> getReplacement(match, player));
+    public static String replaceDynamicPlaceholders(String text, final Player player) {
+        text = new PlaceholderScanner(text).replace(match -> PlaceholderManager.getReplacement(match, player));
 
         if (PlaceholderAPIHook.INSTANCE.isEnabled()) {
             text = PlaceholderAPIHook.setPlaceholders(text, player);
@@ -60,17 +60,17 @@ public class PlaceholderManager {
         return text;
     }
 
-    private static @Nullable String getReplacement(PlaceholderMatch placeholderMatch, Player player) {
-        Placeholder placeholder = dynamicPlaceholderRegistry.getPlaceholder(placeholderMatch);
+    private static @Nullable String getReplacement(final PlaceholderMatch placeholderMatch, final Player player) {
+        final Placeholder placeholder = PlaceholderManager.dynamicPlaceholderRegistry.getPlaceholder(placeholderMatch);
 
         if (placeholder == null) {
             return null; // Placeholder not found
         }
 
-        return placeholderCache.computeIfAbsent(placeholderMatch, player, () -> {
+        return PlaceholderManager.placeholderCache.computeIfAbsent(placeholderMatch, player, () -> {
             try {
                 return placeholder.getReplacer().getReplacement(player, placeholderMatch.getArgument());
-            } catch (Throwable t) {
+            } catch (final Throwable t) {
                 Log.severe("Encountered an exception while replacing the placeholder \"" + placeholderMatch.getIdentifier()
                         + "\" registered by the plugin \"" + placeholder.getPlugin().getName() + "\"", t);
                 return "[PLACEHOLDER ERROR]";
@@ -78,22 +78,22 @@ public class PlaceholderManager {
         });
     }
 
-    public static void setStaticPlaceholders(List<StaticPlaceholder> staticPlaceholders) {
+    public static void setStaticPlaceholders(final List<StaticPlaceholder> staticPlaceholders) {
         PlaceholderManager.staticPlaceholders.clear();
         PlaceholderManager.staticPlaceholders.addAll(staticPlaceholders);
     }
 
-    public static boolean hasStaticPlaceholders(List<String> list) {
-        for (String element : list) {
-            if (hasStaticPlaceholders(element)) {
+    public static boolean hasStaticPlaceholders(final List<String> list) {
+        for (final String element : list) {
+            if (PlaceholderManager.hasStaticPlaceholders(element)) {
                 return true;
             }
         }
         return false;
     }
 
-    public static boolean hasStaticPlaceholders(String text) {
-        for (StaticPlaceholder staticPlaceholder : staticPlaceholders) {
+    public static boolean hasStaticPlaceholders(final String text) {
+        for (final StaticPlaceholder staticPlaceholder : PlaceholderManager.staticPlaceholders) {
             if (text.contains(staticPlaceholder.getIdentifier())) {
                 return true;
             }
@@ -102,35 +102,34 @@ public class PlaceholderManager {
     }
 
     public static String replaceStaticPlaceholders(String text) {
-        for (StaticPlaceholder staticPlaceholder : staticPlaceholders) {
+        for (final StaticPlaceholder staticPlaceholder : PlaceholderManager.staticPlaceholders) {
             text = text.replace(staticPlaceholder.getIdentifier(), staticPlaceholder.getReplacement());
         }
         return text;
     }
 
-    public static void registerPluginPlaceholder(Plugin plugin, String identifier, PlaceholderReplacer placeholderReplacer) {
+    public static void registerPluginPlaceholder(final Plugin plugin, final String identifier,
+            final PlaceholderReplacer placeholderReplacer) {
         Preconditions.notNull(plugin, "plugin");
-        checkIdentifierArgument(identifier);
+        PlaceholderManager.checkIdentifierArgument(identifier);
         Preconditions.notNull(placeholderReplacer, "placeholderReplacer");
 
-        dynamicPlaceholderRegistry.registerExternalPlaceholder(plugin, identifier, placeholderReplacer);
+        PlaceholderManager.dynamicPlaceholderRegistry.registerExternalPlaceholder(plugin, identifier, placeholderReplacer);
     }
 
-    public static boolean unregisterPluginPlaceholder(Plugin plugin, String identifier) {
+    public static boolean unregisterPluginPlaceholder(final Plugin plugin, final String identifier) {
         Preconditions.notNull(plugin, "plugin");
-        checkIdentifierArgument(identifier);
+        PlaceholderManager.checkIdentifierArgument(identifier);
 
-        return dynamicPlaceholderRegistry.unregisterExternalPlaceholder(plugin, identifier);
+        return PlaceholderManager.dynamicPlaceholderRegistry.unregisterExternalPlaceholder(plugin, identifier);
     }
 
-    private static void checkIdentifierArgument(String identifier) {
+    private static void checkIdentifierArgument(final String identifier) {
         Preconditions.notNull(identifier, "identifier");
         Preconditions.checkArgument(1 <= identifier.length() && identifier.length() <= 30, "identifier length must be between 1 and 30");
         Preconditions.checkArgument(identifier.matches("[a-zA-Z0-9_]+"), "identifier must contain only letters, numbers and underscores");
     }
 
-    public static void onTick() {
-        placeholderCache.onTick();
-    }
+    public static void onTick() { PlaceholderManager.placeholderCache.onTick(); }
 
 }

@@ -1,11 +1,11 @@
 /*
- * Copyright (C) filoghost and contributors
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) filoghost and contributors SPDX-License-Identifier:
+ * GPL-3.0-or-later
  */
 package me.filoghost.chestcommands.logging;
 
 import java.util.List;
+
 import me.filoghost.fcommons.Strings;
 
 class MessagePartJoiner {
@@ -15,20 +15,20 @@ class MessagePartJoiner {
     private String previousMessagePart;
     private boolean appendedFirstSentenceSeparator;
 
-    public static String join(List<String> messageParts) {
-        int estimateLength = getEstimateLength(messageParts);
-        MessagePartJoiner errorMessageBuilder = new MessagePartJoiner(estimateLength);
-        for (String messagePart : messageParts) {
+    public static String join(final List<String> messageParts) {
+        final int estimateLength = MessagePartJoiner.getEstimateLength(messageParts);
+        final MessagePartJoiner errorMessageBuilder = new MessagePartJoiner(estimateLength);
+        for (final String messagePart : messageParts) {
             errorMessageBuilder.append(messagePart);
         }
         return errorMessageBuilder.build();
     }
 
-    private static int getEstimateLength(List<String> messageParts) {
+    private static int getEstimateLength(final List<String> messageParts) {
         int estimateLength = 0;
 
         // Length of message parts
-        for (String messagePart : messageParts) {
+        for (final String messagePart : messageParts) {
             estimateLength += messagePart.length();
         }
 
@@ -38,43 +38,39 @@ class MessagePartJoiner {
         return estimateLength;
     }
 
-    private MessagePartJoiner(int estimateLength) {
-        output = new StringBuilder(estimateLength);
+    private MessagePartJoiner(final int estimateLength) { this.output = new StringBuilder(estimateLength); }
+
+    private void append(final String messagePart) {
+        this.appendSeparator();
+        this.appendMessagePart(messagePart);
+
+        this.previousMessagePart = messagePart;
     }
 
-    private void append(String messagePart) {
-        appendSeparator();
-        appendMessagePart(messagePart);
-
-        previousMessagePart = messagePart;
-    }
-
-    private void appendMessagePart(String messagePart) {
-        if (previousMessagePart == null || previousMessagePart.endsWith(".")) {
-            output.append(Strings.capitalizeFirst(messagePart));
+    private void appendMessagePart(final String messagePart) {
+        if (this.previousMessagePart == null || this.previousMessagePart.endsWith(".")) {
+            this.output.append(Strings.capitalizeFirst(messagePart));
         } else {
-            output.append(messagePart);
+            this.output.append(messagePart);
         }
     }
 
     private void appendSeparator() {
-        if (previousMessagePart != null) {
-            if (previousMessagePart.endsWith(".")) {
-                output.append(" ");
+        if (this.previousMessagePart != null) {
+            if (this.previousMessagePart.endsWith(".")) {
+                this.output.append(" ");
                 this.appendedFirstSentenceSeparator = false;
 
-            } else if (!appendedFirstSentenceSeparator) {
-                output.append(": ");
+            } else if (!this.appendedFirstSentenceSeparator) {
+                this.output.append(": ");
                 this.appendedFirstSentenceSeparator = true;
 
             } else {
-                output.append(", ");
+                this.output.append(", ");
             }
         }
     }
 
-    private String build() {
-        return output.toString();
-    }
+    private String build() { return this.output.toString(); }
 
 }

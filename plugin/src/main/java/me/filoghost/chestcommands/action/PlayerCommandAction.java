@@ -1,7 +1,6 @@
 /*
- * Copyright (C) filoghost and contributors
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) filoghost and contributors SPDX-License-Identifier:
+ * GPL-3.0-or-later
  */
 package me.filoghost.chestcommands.action;
 
@@ -12,13 +11,9 @@ public class PlayerCommandAction implements Action {
 
     private final PlaceholderString command;
 
-    public PlayerCommandAction(String serializedAction) {
-        command = PlaceholderString.of(serializedAction);
-    }
+    public PlayerCommandAction(final String serializedAction) { this.command = PlaceholderString.of(serializedAction); }
 
     @Override
-    public void execute(Player player) {
-        player.chat('/' + command.getValue(player));
-    }
+    public void execute(final Player player) { player.chat('/' + this.command.getValue(player)); }
 
 }

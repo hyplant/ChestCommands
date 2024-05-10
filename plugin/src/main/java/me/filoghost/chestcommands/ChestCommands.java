@@ -1,7 +1,6 @@
 /*
- * Copyright (C) filoghost and contributors
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) filoghost and contributors SPDX-License-Identifier:
+ * GPL-3.0-or-later
  */
 package me.filoghost.chestcommands;
 
@@ -44,8 +43,8 @@ import java.util.List;
 
 public class ChestCommands extends FCommonsPlugin {
 
-
-    public static final String CHAT_PREFIX = ChatColor.DARK_GREEN + "[" + ChatColor.GREEN + "ChestCommands" + ChatColor.DARK_GREEN + "] " + ChatColor.GREEN;
+    public static final String CHAT_PREFIX = ChatColor.DARK_GREEN + "[" + ChatColor.GREEN + "ChestCommands" + ChatColor.DARK_GREEN + "] "
+            + ChatColor.GREEN;
 
     private static Plugin pluginInstance;
     private static Path dataFolderPath;
@@ -66,18 +65,19 @@ public class ChestCommands extends FCommonsPlugin {
             }
         }
 
-        if (pluginInstance != null || System.getProperty("ChestCommandsLoaded") != null) {
-            throw new PluginEnableException("External plugin reloading is not supported:"
-                    + " avoid using /reload or plugin reloaders, and use the command \"/cc reload\" instead."
-                    + " Fully restart the server to enable ChestCommands again.");
+        if (ChestCommands.pluginInstance != null || System.getProperty("ChestCommandsLoaded") != null) {
+            throw new PluginEnableException("""
+                    External plugin reloading is not supported:\
+                     avoid using /reload or plugin reloaders, and use the command "/cc reload" instead.\
+                     Fully restart the server to enable ChestCommands again.""");
         }
 
         System.setProperty("ChestCommandsLoaded", "true");
 
-        pluginInstance = this;
-        dataFolderPath = getDataFolder().toPath();
-        configManager = new ConfigManager(getDataFolderPath());
-        placeholders = new CustomPlaceholders();
+        ChestCommands.pluginInstance = this;
+        ChestCommands.dataFolderPath = this.getDataFolder().toPath();
+        ChestCommands.configManager = new ConfigManager(ChestCommands.getDataFolderPath());
+        ChestCommands.placeholders = new CustomPlaceholders();
 
         BackendAPI.setImplementation(new DefaultBackendAPI());
 
@@ -107,74 +107,74 @@ public class ChestCommands extends FCommonsPlugin {
 
         new CommandHandler("chestcommands").register(this);
 
-        ErrorCollector errorCollector = load();
+        final ErrorCollector errorCollector = ChestCommands.load();
 
         if (errorCollector.hasErrors()) {
             errorCollector.logToConsole();
             Bukkit.getScheduler().runTaskLater(this, () -> {
-                Bukkit.getConsoleSender().sendMessage(
-                        ChestCommands.CHAT_PREFIX + ChatColor.RED + "Encountered " + errorCollector.getErrorsCount() + " error(s) on load. "
-                        + "Check previous console logs or run \"/chestcommands errors\" to see them again.");
+                Bukkit.getConsoleSender()
+                        .sendMessage(ChestCommands.CHAT_PREFIX + ChatColor.RED + "Encountered " + errorCollector.getErrorsCount()
+                                + " error(s) on load. "
+                                + "Check previous console logs or run \"/chestcommands errors\" to see them again.");
             }, 10L);
         }
 
         if (Settings.get().update_notifications) {
-            UpdateChecker.run(this, 56919, (String newVersion) -> {
+            UpdateChecker.run(this, 56919, (final String newVersion) -> {
                 ChestCommands.newVersion = newVersion;
 
-                Log.info("Found a new version: " + newVersion + " (yours: v" + getDescription().getVersion() + ")");
+                Log.info("Found a new version: " + newVersion + " (yours: v" + this.getDescription().getVersion() + ")");
                 Log.info("Download the update on Bukkit Dev:");
                 Log.info("https://dev.bukkit.org/projects/chest-commands");
             });
         }
 
         // Start bStats metrics
-        int pluginID = 3658;
+        final int pluginID = 3658;
         new MetricsLite(this, pluginID);
 
         Bukkit.getScheduler().runTaskTimer(this, new TickingTask(), 1L, 1L);
     }
 
     @Override
-    public void onDisable() {
-        MenuManager.closeAllOpenMenuViews();
-    }
+    public void onDisable() { MenuManager.closeAllOpenMenuViews(); }
 
     public static ErrorCollector load() {
-        ErrorCollector errorCollector = new PrintableErrorCollector();
+        final ErrorCollector errorCollector = new PrintableErrorCollector();
         MenuManager.reset();
-        boolean isFreshInstall = !Files.isDirectory(configManager.getRootDataFolder());
+        final boolean isFreshInstall = !Files.isDirectory(ChestCommands.configManager.getRootDataFolder());
         try {
-            Files.createDirectories(configManager.getRootDataFolder());
-        } catch (IOException e) {
+            Files.createDirectories(ChestCommands.configManager.getRootDataFolder());
+        } catch (final IOException e) {
             errorCollector.add(e, Errors.Config.createDataFolderIOException);
             return errorCollector;
         }
-        
+
         try {
-            UpgradesExecutor upgradeExecutor = new UpgradesExecutor(configManager);
-            boolean allUpgradesSuccessful = upgradeExecutor.run(isFreshInstall, errorCollector);
+            final UpgradesExecutor upgradeExecutor = new UpgradesExecutor(ChestCommands.configManager);
+            final boolean allUpgradesSuccessful = upgradeExecutor.run(isFreshInstall, errorCollector);
             if (!allUpgradesSuccessful) {
                 errorCollector.add(Errors.Upgrade.failedSomeUpgrades);
             }
-        } catch (UpgradeExecutorException e) {
+        } catch (final UpgradeExecutorException e) {
             errorCollector.add(e, Errors.Upgrade.genericExecutorError);
             errorCollector.add(Errors.Upgrade.failedSomeUpgrades);
         }
 
-        configManager.tryLoadSettings(errorCollector);
-        configManager.tryLoadLang(errorCollector);
-        placeholders = configManager.tryLoadCustomPlaceholders(errorCollector);
-        PlaceholderManager.setStaticPlaceholders(placeholders.getPlaceholders());
+        ChestCommands.configManager.tryLoadSettings(errorCollector);
+        ChestCommands.configManager.tryLoadLang(errorCollector);
+        ChestCommands.placeholders = ChestCommands.configManager.tryLoadCustomPlaceholders(errorCollector);
+        PlaceholderManager.setStaticPlaceholders(ChestCommands.placeholders.getPlaceholders());
 
         // Create the menu folder with the example menu
-        if (!Files.isDirectory(configManager.getMenusFolder())) {
-            ConfigLoader exampleMenuLoader = configManager.getConfigLoader(configManager.getMenusFolder().resolve("example.yml"));
-            configManager.tryCreateDefault(errorCollector, exampleMenuLoader);
+        if (!Files.isDirectory(ChestCommands.configManager.getMenusFolder())) {
+            final ConfigLoader exampleMenuLoader = ChestCommands.configManager
+                    .getConfigLoader(ChestCommands.configManager.getMenusFolder().resolve("example.yml"));
+            ChestCommands.configManager.tryCreateDefault(errorCollector, exampleMenuLoader);
         }
 
-        List<LoadedMenu> loadedMenus = configManager.tryLoadMenus(errorCollector);
-        for (LoadedMenu loadedMenu : loadedMenus) {
+        final List<LoadedMenu> loadedMenus = ChestCommands.configManager.tryLoadMenus(errorCollector);
+        for (final LoadedMenu loadedMenu : loadedMenus) {
             MenuManager.registerMenu(loadedMenu, errorCollector);
         }
 
@@ -182,25 +182,14 @@ public class ChestCommands extends FCommonsPlugin {
         return errorCollector;
     }
 
+    public static Plugin getInstance() { return ChestCommands.pluginInstance; }
 
-    public static Plugin getInstance() {
-        return pluginInstance;
-    }
+    public static Path getDataFolderPath() { return ChestCommands.dataFolderPath; }
 
-    public static Path getDataFolderPath() {
-        return dataFolderPath;
-    }
+    public static boolean hasNewVersion() { return ChestCommands.newVersion != null; }
 
-    public static boolean hasNewVersion() {
-        return newVersion != null;
-    }
+    public static String getNewVersion() { return ChestCommands.newVersion; }
 
-    public static String getNewVersion() {
-        return newVersion;
-    }
-
-    public static ErrorCollector getLastLoadErrors() {
-        return lastLoadErrors;
-    }
+    public static ErrorCollector getLastLoadErrors() { return ChestCommands.lastLoadErrors; }
 
 }

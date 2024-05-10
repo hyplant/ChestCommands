@@ -1,13 +1,13 @@
 /*
- * Copyright (C) filoghost and contributors
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) filoghost and contributors SPDX-License-Identifier:
+ * GPL-3.0-or-later
  */
 package me.filoghost.chestcommands.api;
 
-import me.filoghost.chestcommands.api.internal.BackendAPI;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
+
+import me.filoghost.chestcommands.api.internal.BackendAPI;
 
 /**
  * An {@link Icon} which statically displays a given {@link ItemStack}.
@@ -23,7 +23,7 @@ public interface StaticIcon extends ClickableIcon {
      * @return the created icon
      * @since 1
      */
-    static @NotNull StaticIcon create(@NotNull ItemStack itemStack) {
+    static @NotNull StaticIcon create(@NotNull final ItemStack itemStack) {
         return BackendAPI.getImplementation().createStaticIcon(itemStack);
     }
 
@@ -41,6 +41,7 @@ public interface StaticIcon extends ClickableIcon {
      * @return the current displayed item stack
      * @since 1
      */
-    @NotNull ItemStack getItemStack();
+    @NotNull
+    ItemStack getItemStack();
 
 }

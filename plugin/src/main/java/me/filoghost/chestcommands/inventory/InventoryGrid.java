@@ -1,7 +1,6 @@
 /*
- * Copyright (C) filoghost and contributors
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) filoghost and contributors SPDX-License-Identifier:
+ * GPL-3.0-or-later
  */
 package me.filoghost.chestcommands.inventory;
 
@@ -14,23 +13,17 @@ public class InventoryGrid extends Grid<ItemStack> {
 
     private final Inventory inventory;
 
-    public InventoryGrid(MenuInventoryHolder inventoryHolder, int rows, String title) {
+    public InventoryGrid(final MenuInventoryHolder inventoryHolder, final int rows, final String title) {
         super(rows, 9);
-        this.inventory = Bukkit.createInventory(inventoryHolder, getSize(), title);
+        this.inventory = Bukkit.createInventory(inventoryHolder, this.getSize(), title);
     }
 
-    public Inventory getInventory() {
-        return inventory;
-    }
+    public Inventory getInventory() { return this.inventory; }
 
     @Override
-    protected @Nullable ItemStack getByIndex0(int ordinalIndex) {
-        return inventory.getItem(ordinalIndex);
-    }
+    protected @Nullable ItemStack getByIndex0(final int ordinalIndex) { return this.inventory.getItem(ordinalIndex); }
 
     @Override
-    protected void setByIndex0(int ordinalIndex, @Nullable ItemStack element) {
-        inventory.setItem(ordinalIndex, element);
-    }
+    protected void setByIndex0(final int ordinalIndex, @Nullable final ItemStack element) { this.inventory.setItem(ordinalIndex, element); }
 
 }

@@ -1,7 +1,6 @@
 /*
- * Copyright (C) filoghost and contributors
- *
- * SPDX-License-Identifier: GPL-3.0-or-later
+ * Copyright (C) filoghost and contributors SPDX-License-Identifier:
+ * GPL-3.0-or-later
  */
 package me.filoghost.chestcommands.placeholder;
 
@@ -14,34 +13,30 @@ public class PlaceholderString {
     private final String stringWithStaticPlaceholders;
     private final boolean hasDynamicPlaceholders;
 
-    public static @Nullable PlaceholderString of(String string) {
+    public static @Nullable PlaceholderString of(final String string) {
         if (string != null) {
             return new PlaceholderString(string);
         } else {
             return null;
         }
     }
-    
-    private PlaceholderString(String originalString) {
+
+    private PlaceholderString(final String originalString) {
         this.originalString = originalString;
         this.stringWithStaticPlaceholders = PlaceholderManager.replaceStaticPlaceholders(originalString);
-        this.hasDynamicPlaceholders = PlaceholderManager.hasDynamicPlaceholders(stringWithStaticPlaceholders);
+        this.hasDynamicPlaceholders = PlaceholderManager.hasDynamicPlaceholders(this.stringWithStaticPlaceholders);
     }
-    
-    public String getValue(Player player) {
-        if (hasDynamicPlaceholders) {
-            return PlaceholderManager.replaceDynamicPlaceholders(stringWithStaticPlaceholders, player);
+
+    public String getValue(final Player player) {
+        if (this.hasDynamicPlaceholders) {
+            return PlaceholderManager.replaceDynamicPlaceholders(this.stringWithStaticPlaceholders, player);
         } else {
-            return stringWithStaticPlaceholders;
+            return this.stringWithStaticPlaceholders;
         }
     }
 
-    public String getOriginalValue() {
-        return originalString;
-    }
+    public String getOriginalValue() { return this.originalString; }
 
-    public boolean hasDynamicPlaceholders() {
-        return hasDynamicPlaceholders;
-    }
+    public boolean hasDynamicPlaceholders() { return this.hasDynamicPlaceholders; }
 
 }
