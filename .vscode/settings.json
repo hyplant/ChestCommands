@@ -12,8 +12,8 @@
     },"java.configuration.runtimes": [
         
         {
-            "name": "JavaSE-21", // replace version by 8, 11 or 17
-            "path": "C:\\JBR-21\\",
+            "name": "JavaSE-17", // replace version by 8, 11 or 17
+            "path": "C:\\JBR-17\\",
 
           },
     ]
